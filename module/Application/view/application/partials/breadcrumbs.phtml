@@ -1,0 +1,10 @@
+<?php if (count($this->pages) > 1) : ?>
+    <div class="breadcrumbs">
+        <?= implode(' / ', array_map(
+            function ($a) {
+                return $a->isActive() ? $a->getLabel() : '<a href="' . $a->getHref() . '">' . $a->getLabel() . '</a>';
+            },
+            $this->pages
+        )); ?>
+    </div>
+<?php endif; ?>

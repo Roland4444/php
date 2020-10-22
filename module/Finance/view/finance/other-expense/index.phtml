@@ -1,0 +1,13 @@
+<h1>Управленческие расходы</h1>
+
+<?php $this->initScript('finance/other-expenses'); ?>
+
+<div id="app">
+    <finance-other-expenses
+        :permissions='<?= json_encode($permissions) ?>'
+        :banks='<?= json_encode($bankAccounts) ?>'
+        :categories='<?= json_encode($categories) ?>'
+        api-url="<?=$this->url($apiUrl) ?>"
+        import-url="<?=$this->url('financeImport') ?>"
+    />
+</div>

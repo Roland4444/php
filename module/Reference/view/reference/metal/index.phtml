@@ -1,0 +1,47 @@
+<h1>Справочник металлов</h1>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url('metal', ['action' => 'add']); ?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Группа</th>
+            <th>По умолчанию</th>
+            <th>Код</th>
+            <th>Псевдоним</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rows as $line) :?>
+            <tr>
+                <td><?= $line->getName(); ?></td>
+                <td><?= $line->getGroup()->getName(); ?></td>
+                <td>
+                    <?php if ($line->getDef()) :?>
+                        Да
+                    <?php else : ?>
+                        Нет
+                    <?php endif; ?>
+                </td>
+                <td><?= $line->getCode() ?></td>
+                <td><?= $line->getAlias() ?></td>
+                <td class="action">
+                    <?php if ($this->permissions['edit']) : ?>
+                        <a href="<?= $this->url('metal', ['action' => 'edit','id' => $line->getId()]); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'>
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($this->permissions['delete']) : ?>
+                        <a class="confirm" href="<?= $this->url('metal', ['action' => 'delete','id' => $line->getId()]); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

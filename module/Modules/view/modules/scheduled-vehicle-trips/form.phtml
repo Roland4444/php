@@ -1,0 +1,55 @@
+<?php
+$form->setAttribute('class', 'form-horizontal');
+?>
+<script>
+    $(document).ready(function(){
+        $('#date').datepicker();
+        if (!document.querySelector('#departureTime') && !document.querySelector('#departureTime')) {
+            return;
+        }
+        DateNow = $.datepicker.formatDate('yy-mm-dd', new Date()) + ' ';
+
+        $('#departureTime').datetimepicker({
+            format: 'LT',
+            locale: 'ru',
+            date: (DateNow + departureTime.value),
+        });
+
+        $('#arrivalAtPointTime').datetimepicker({
+            format: 'LT',
+            locale: 'ru',
+            date: (DateNow + arrivalAtPointTime.value),
+        });
+
+        $('#departureFromPointTime').datetimepicker({
+            format: 'LT',
+            locale: 'ru',
+            date: (DateNow + departureFromPointTime.value),
+        });
+
+        $('#arrivalTime').datetimepicker({
+            format: 'LT',
+            locale: 'ru',
+            date: (DateNow + arrivalTime.value),
+        });
+    });
+</script>
+
+<?= $this->form()->openTag($form); ?>
+
+<?php foreach ($form as $element) : ?>
+    <div class="form-group <?= $this->formElementErrors($element) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($element); ?>
+            <?php if ($this->formElementErrors($element)) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($element) ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<?= $this->form()->closeTag(); ?>
+
+
+<p class="alert-danger"><?= $message; ?></p>

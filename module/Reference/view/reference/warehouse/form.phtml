@@ -1,0 +1,21 @@
+<p class="text-danger"><?= $error; ?></p>
+
+<?php
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal form-add');
+$form->setAttribute('action', $this->url('warehouse', ['action' => $action, 'id' => $id]));
+$form->prepare();
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <div class="form-group <?= $this->formElementErrors($element) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($element); ?>
+            <?php if ($this->formElementErrors($element)) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($element); ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>

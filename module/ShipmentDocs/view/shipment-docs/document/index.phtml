@@ -1,0 +1,100 @@
+<h1>Документы отгрузки</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('shipmentDocs/document'));
+?>
+<?= $this->form()->openTag($form) ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<?php if (! empty($error)) : ?>
+    <p class="validation-error-message"><?= $error ?></p>
+<?php endif; ?>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<?php if (! empty($permissions['add'])) : ?>
+    <p>
+        <a href="<?= $this->url('shipmentDocs/document', array_merge(['action' => 'add']))?>"
+           class="btn btn-default">
+            Добавить
+        </a>
+    </p>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Номер машины</th>
+        <th>Получатель</th>
+        <th>Товарная <br> накладная</th>
+        <th>Транспортная <br> накладная</th>
+        <th>Товарно-транспортная <br> накладная</th>
+        <th>Доверенность</th>
+        <th>Удостоверения безопасности</th>
+        <th> </th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if (! empty($shipmentDocs)) : ?>
+        <?php foreach ($shipmentDocs as $shipmentDoc) : ?>
+            <tr>
+                <td><?= $shipmentDoc['date'] ?></td>
+                <td><?= $shipmentDoc['car_number'] ?></td>
+                <td><?= $shipmentDoc['receiver']['legal_name'] ?></td>
+                <td>
+                    <a target="_blank" href="<?= $this->url('shipmentDocs/document', ['action' => 'pdf-packing-list', 'id' => $shipmentDoc['id']]); ?>">
+                        <?= $shipmentDoc['number'] ?>
+                    </a>
+                </td>
+                <td>
+                    <a target="_blank" href="<?= $this->url('shipmentDocs/document', ['action' => 'pdf-transport-waybill', 'id' => $shipmentDoc['id']]); ?>">
+                        <?= $shipmentDoc['transport_doc_number'] ?? '' ?>
+                    </a>
+                </td>
+                <td>
+                    <a target="_blank" href="<?= $this->url('shipmentDocs/document', ['action' => 'pdf-packing-transport', 'id' => $shipmentDoc['id']]); ?>">
+                        <?= $shipmentDoc['number'] ?>
+                    </a>
+                </td>
+                <td>
+                    <a target="_blank" href="<?= $this->url('shipmentDocs/document', ['action' => 'pdf-letter-of-authority', 'id' => $shipmentDoc['id']]); ?>">
+                        <?= $shipmentDoc['letter_of_authority_number'] ?>
+                    </a>
+                </td>
+                <td>
+                    <a target="_blank" href="<?= $this->url('shipmentDocs/document', ['action' => 'pdf-explosive-radiation-certificate', 'id' => $shipmentDoc['id']]); ?>">
+                        <?= $shipmentDoc['explosive_number'] ?> / <?= $shipmentDoc['radiation_number'] ?>
+                    </a>
+                </td>
+                <td>
+                    <?php if (! empty($permissions['edit'])) : ?>
+                        <a href="<?= $this->url('shipmentDocs/document', ['action' => 'edit', 'id' => $shipmentDoc['id']]); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if (! empty($permissions['delete'])) : ?>
+                        <a class="confirm" href="<?= $this->url('shipmentDocs/document', ['action' => 'delete', 'id' => $shipmentDoc['id']]); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </tbody>
+</table>

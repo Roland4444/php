@@ -1,0 +1,80 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+    <script>
+        $(function () {
+            new allCustomers('<?= $this->url('customer', ['action' => 'list']) ?>');
+            $("[name='customer']").select2();
+        });
+    </script>
+
+<?php
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('action', $this->url($this->indexRoute, ['action' => 'edit','department' => $dep,'id' => $id]));
+
+if ($this->permissions['delete']) {
+    $form->prepare();
+}
+?>
+<?= $this->form()->openTag($form); ?>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('date')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('date')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('date')); ?>
+            <?php if ($this->formElementErrors($form->get('date'))) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($form->get('date')); ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('customer')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('customer')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('customer'));?>
+        </div>
+        <div id="all_customers" class="btn btn-default">все поставщики</div>
+    </div>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('metal')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('metal')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('metal')); ?>
+        </div>
+    </div>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('weight')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('weight')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?php
+            if (! $this->permissions['delete']) {
+                $form->get('weight')->setAttributes(['readonly' => 'true']);
+            }?>
+            <?= $this->formElement($form->get('weight')); ?>
+
+        </div>
+    </div>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('cost')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('cost')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('cost')); ?>
+        </div>
+    </div>
+
+    <div class="form-group <?= $this->formElementErrors($form->get('formal')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('formal')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('formal')); ?>
+        </div>
+    </div>
+
+<div class="form-group">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+        <input type='submit' value='Сохранить' class="btn btn-default" >
+    </div>
+</div>
+<?= $this->form()->closeTag();?>

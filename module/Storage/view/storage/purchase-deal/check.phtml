@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Чек&nbsp;<?= $deal->getId(); ?></title>
+    <meta charset="UTF-8">
+    <style>
+        @media print {
+            @page {
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 300px; border: 1px solid black; text-align: center;">
+        <h1>Чек&nbsp;<?= $deal->getId(); ?></h1>
+        <table style="margin: 0 auto;">
+            <?php if (strlen($deal->getComment())) : ?>
+                <tr>
+                    <td>Клиент</td>
+                    <td><?= $deal->getComment(); ?></td>
+                </tr>
+            <?php endif; ?>
+            <tr>
+                <td>Дата</td>
+                <td><?= $date; ?></td>
+            </tr>
+            <tr>
+                <td>Сумма</td>
+                <td><?= $this->currencyFormat($checkData->getSum(), 'RUR'); ?></td>
+            </tr>
+        </table>
+
+        <table style="margin: 20px auto;">
+            <?php foreach ($checkData->getPurchases() as $purchase) : ?>
+                <tr>
+                    <td>
+                        <?= $purchase->getMetal()->getName(); ?>
+                    </td>
+                    <td>
+                        <?= $this->numberFormat($purchase->getWeight(), NumberFormatter::DECIMAL); ?>&nbsp;кг.
+                    </td>
+                    <td>
+                        <?= $this->currencyFormat($purchase->getCost(), 'RUR'); ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
+        <img src="<?= $deal->getQR(); ?>" />
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<h1>Остатки на складе</h1>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('spareTotal', ['warehouse' => $warehouseId]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Остаток</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($totals as $total) :?>
+        <tr>
+            <td><?= $total['text']; ?></td>
+            <td style="text-align: center">
+                <?= $total['total']; ?> <?= $total['spareUnits']; ?>
+            </td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>

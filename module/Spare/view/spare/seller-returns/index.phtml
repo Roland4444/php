@@ -1,0 +1,9 @@
+<?php $this->initScript('spare/seller-returns'); ?>
+
+<div id="app">
+    <seller-returns-list
+        :sellers='<?= $this->sellers ?>'
+        :api-url="'<?=$this->url('spareSellerReturns') ?>'"
+    >
+    </seller-returns-list>
+</div>

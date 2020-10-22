@@ -1,0 +1,13 @@
+<?php $this->initScript('spare/consumption'); ?>
+<div id="app">
+    <spare-consumption-form-panel
+            :cancel-uri="'<?=$cancelUri?>'"
+            :save-uri="'<?=$saveUri?>'"
+            :consumptions='<?=$consumptions?>'
+            :employees-object='<?=$employees?>'
+            :spares-object='<?=$jsonSpare?>'
+            :vehicles-array='<?=$vehicles?>'
+            :roles='<?=$roles?>'
+    ></spare-consumption-form-panel>
+</div>
+

@@ -1,0 +1,26 @@
+<?= $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?= $this->headTitle('AVS Base') ?>
+    <link rel="stylesheet" href="/css/login.css" media="screen" type="text/css" />
+</head>
+<body>
+
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" action="<?= $this->url('login');?>" method="post">
+            <input type="text" name="login" placeholder="Логин"/>
+            <input type="password" name="password" placeholder="Пароль" autocomplete="off" />
+            <button class="btn btn-primary">Войти</button>
+            <label style="margin-top: 20px;width: 100%; font-weight: normal;">
+                <input style="width: 30px;" type="checkbox" name="remember" value="yes" checked="checked">Оставаться в системе
+            </label>
+            <p class="message"><?= $this->message; ?></p>
+        </form>
+    </div>
+</div>
+<script src="/js/bundle.js"></script>
+</body>
+</html>

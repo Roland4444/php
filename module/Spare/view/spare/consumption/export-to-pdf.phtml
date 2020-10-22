@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Акт списания</title>
+</head>
+<style>
+    body {
+        font-family: DejaVu Sans;
+    }
+
+    @page {
+        margin: 7mm;
+    }
+    .pdftable {
+        border-spacing: 0;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+        border: 1px solid #000;
+        font-size: 10px;
+    }
+    .pdftable td {
+        border: 1px solid #000;
+    }
+</style>
+<body>
+<div>
+    <div>
+        <p>Акт № <?= /** @var \Spare\Entity\Consumption $consumption */
+            $consumption->getId() ?>
+        </p>
+        <div>
+            <p>Дата: <?= $consumption->getDate() ?></p>
+            <p>Сотрудник: <?= $consumption->getEmployee()->getName() ?></p>
+            <p>Склад: <?= $consumption->getWarehouse()->getName() ?></p>
+        </div>
+        <table class="pdftable">
+            <tr>
+                <td style="width: 20%;">Запчасть</td>
+                <td style="width: 15%;">Количество</td>
+                <td style="width: 20%;">Техника</td>
+                <td style="width: 25%;">Комментарий</td>
+            </tr>
+            <?php foreach ($consumption->getItems() as $consumptionItem) : /**@var \Spare\Entity\ConsumptionItem $consumptionItem*/?>
+                <tr>
+                    <td><?= $consumptionItem->getSpare()->getName() ?></td>
+                    <td><?= $consumptionItem->getQuantity() ?></td>
+                    <td><?= empty($consumptionItem->getVehicle()) ? '-' : $consumptionItem->getVehicle()->getName() ?></td>
+                    <td><?= $consumptionItem->getComment() ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</body>
+</html>

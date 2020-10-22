@@ -1,0 +1,8 @@
+<?php $this->headTitle('Касса')?>
+<h1>Касса</h1>
+
+<?php $this->initScript('transport/income'); ?>
+
+<div id="app">
+    <income-list api-url="<?=$this->url('transportIncome') ?>" />
+</div>

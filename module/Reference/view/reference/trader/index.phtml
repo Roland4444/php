@@ -1,0 +1,49 @@
+<h1>Справочник трейдеров</h1>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('trader'));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<a href="<?= $this->url('trader', ['action' => 'add']); ?>" class="btn btn-default">Добавить</a>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Группа</th>
+            <th>По умолчанию</th>
+            <th>ИНН</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rows as $line) :?>
+            <tr>
+                <td><?php echo $line->getName()?></td>
+                <td><?php echo $line->getParent()->getName()?></td>
+                <td>
+                    <?php if ($line->getDef()) :?>
+                        Да
+                    <?php else : ?>
+                        Нет
+                    <?php endif; ?>
+                </td>
+                <td><?= $line->getInn(); ?></td>
+                <td class="action">
+                    <a href="<?= $this->url('trader', ['action' => 'edit','id' => $line->getId()]); ?>">
+                        <img src='/images/edit.png' alt='Редактировать'>
+                    </a>
+                    <a class="confirm" href="<?= $this->url('trader', ['action' => 'delete','id' => $line->getId()]); ?>">
+                        <img src='/images/del.png' alt='Удалить'>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

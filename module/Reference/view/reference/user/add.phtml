@@ -1,0 +1,119 @@
+<?php $this->headTitle('Добавить пользователя :: '); ?>
+
+<p class="text-danger"><?= $error; ?></p>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?= $this->navigation('Zend\Navigation\Default')->breadcrumbs()->setPartial('application/partials/breadcrumbs') ?></h3>
+    </div>
+    <div class="panel-body">
+        <p></p>
+            <?php
+            $form = $this->form;
+            $form->setAttribute('class', 'form-horizontal');
+            $form->setAttribute('action', $this->url('user/' . $action, ['id' => $id ?? null]));
+            $form->prepare();
+            ?>
+            <?= $this->form()->openTag($form); ?>
+        <div class="row">
+            <div class="col-lg-6">
+                <?php $element = $form->get('name');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <label class="control-label col-lg-2"><?= $element->getLabel() ?></label>
+                    <div class="col-lg-10">
+                        <?= $this->formElement($element); ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block"><?= $this->formElementErrors($element) ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php $element = $form->get('login');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <label class="control-label col-lg-2"><?= $element->getLabel(); ?></label>
+                    <div class="col-lg-10">
+                        <?= $this->formElement($element) ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block"><?= $this->formElementErrors($element); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php $element = $form->get('password');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <label class="control-label col-lg-2"><?= $element->getLabel(); ?></label>
+                    <div class="col-lg-10">
+                        <?= $this->formElement($element) ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block"><?= $this->formElementErrors($element); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php $element = $form->get('confirm_password');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <?= $this->formElement($element) ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block"><?= $this->formElementErrors($element); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-9">
+                        <div class="checkbox">
+                            <label>
+                                <?php $element = $form->get('is_blocked');?>
+                                <?= $this->formElement($element); ?>
+                                <?= $element->getLabel(); ?>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <?php $element = $form->get('change_password');?>
+                                <?= $this->formElement($element); ?>
+                                <?= $element->getLabel(); ?>
+                            </label>
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <?php $element = $form->get('login_from_internet');?>
+                                <?= $this->formElement($element); ?>
+                                <?= $element->getLabel(); ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <?php $element = $form->get('roles');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <label class="control-label col-lg-3"><?= $element->getLabel(); ?></label>
+                    <div class="col-lg-9">
+                        <?= $this->formElement($element); ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block">
+                                <?= $this->formElementErrors($element) ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php $element = $form->get('department');?>
+                <div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+                    <div class="col-lg-offset-3 col-lg-9">
+                        <?= $this->formElement($element) ?>
+                        <?php if ($this->formElementErrors($element)) : ?>
+                            <span class="help-block"><?= $this->formElementErrors($element); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+
+        <p><?= $this->formElement($form->get('submit')); ?></p>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
+
+<div class="clearfix"></div>

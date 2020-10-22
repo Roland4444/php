@@ -1,0 +1,9 @@
+<?php $this->headTitle('Добавить запланированное передвижение техники'); ?>
+
+<h1><?= $this->escapeHtml('Добавить запланированное передвижение техники');?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('scheduledVehicleTrips', ['action' => 'add','id' => isset($id) ? $id : null]));
+echo $this->partial('form.phtml');
+?>

@@ -1,0 +1,13 @@
+<?php $this->headTitle('Редактировать получателя'); ?>
+
+<h1>Редактировать получателя</h1>
+
+<?php $this->initScript('shipmentdoc/receiver'); ?>
+
+<div id="app">
+    <receiver-form
+            :receiver='<?= $entity ?>'
+            :save-receiver-url="'<?= $this->url('shipmentDocs/receiver', ['action' => 'save']) ?>'"
+            :back-url="'<?= $this->url('shipmentDocs/receiver', ['action' => 'index']) ?>'"
+    ></receiver-form>
+</div>

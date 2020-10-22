@@ -1,0 +1,243 @@
+<script>
+    $(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+
+        $('.editItemBtn').on('click', function (e) {
+            e.preventDefault();
+            const id = $(this).attr('id').slice(4, 10);
+            shipment.editItem(<?= $dep; ?>, id)
+        });
+    });
+</script>
+<h1><?= $departmentName; ?> :: отгрузка</h1>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url($route, ['department' => $dep]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url($route, ['department' => $dep, 'action' => 'add']); ?>" class="btn btn-default">
+        Добавить отгрузку
+    </a>
+<?php endif; ?>
+
+<div id="editItemDialog" title="Редактировать позицию"></div>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<table style="width:100%;margin: 20px 0;" class="table-bordered">
+    <tr>
+        <td style="font-weight: bold;text-align: center;width: 130px;">Вагон<br/><?= $total['count']; ?></td>
+        <td>
+            <table style="width:100%;">
+                <thead>
+                <tr>
+                    <th style="padding-left: 5px;">Металл</th>
+                    <th style="width:120px;text-align: right;padding-right: 5px;">Масса</th>
+                    <th style="width:200px;text-align: right;padding-right: 5px;">Фактическая масса</th>
+                    <?php if ($this->permissions['money']) : ?>
+                        <th style="width:100px;text-align: right;padding-right: 5px;">Цена за т</th>
+                        <th style="width:100px;text-align: right;padding-right: 5px;">Сумма</th>
+                    <?php endif; ?>
+                    <?php if ($this->permissions['money']) : ?>
+                        <th style="width:70px;text-align: center;"></th>
+                    <?php endif; ?>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th id="total_weight"
+                        style="text-align: right;padding-right: 5px;"><?= $this->numberFormat($total['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                        &nbsp;кг.
+                    </th>
+                    <th id="total_actual"
+                        style="text-align: right;padding-right: 5px;"><?= $this->numberFormat($total['actual'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                        &nbsp;кг.
+                    </th>
+                    <?php if ($this->hasAccess(Storage\Controller\ShipmentController::class, 'money')) : ?>
+                        <th></th>
+                        <th id="total_sum"
+                            style="text-align: right;padding-right: 5px;"><?= $this->currencyFormat($total['sum'], 'RUR', null, 'ru_RU'); ?></th>
+                        <th></th>
+                    <?php endif; ?>
+                </tr>
+                </thead>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<?php foreach ($rows as $shipment) : ?>
+    <div>
+        <div id="shipment_header">
+            <span style="font-weight: bold;">Дата:</span> <?= $shipment->getDate(); ?>
+            <span style="font-weight: bold;">Трейдер:</span> <?= $shipment->getTrader()->getName(); ?>
+            <span style="font-weight: bold;">Тариф:</span> <?= $shipment->getTariff()->getDestination(); ?>
+            <?php if ($shipment->hasOption('factoring')) : ?>
+                <span style="font-weight: bold;">факторинг</span>
+            <?php endif; ?>
+            <?php if ($this->permissions['delete']) : ?>
+                <span><a class="confirm"
+                         href="<?= $this->url($route, ['action' => 'delete', 'id' => $shipment->getId(), 'department' => $dep]); ?>"><img
+                                src='/images/del.png' alt='Удалить'></a></span>
+            <?php endif; ?>
+            <?php if ($this->permissions['edit']) : ?>
+                <span><a href="<?= $this->url($route, ['action' => 'edit', 'id' => $shipment->getId(), 'department' => $dep]); ?>"><img
+                                src='/images/edit.png' alt='Редактировать'></a></span>
+                <span><a href="<?= $this->url($route, ['action' => 'add', 'id' => $shipment->getId(), 'department' => $dep]); ?>">+</a></span>
+            <?php endif; ?>
+        </div>
+
+        <div>
+            <?php foreach ($shipment->getContainers() as $container) : ?>
+                <table style="width:100%;margin: 5px 0;" class="table-bordered">
+                    <tr>
+                        <td style="padding-left:5px;width: 130px;">
+                            <?php if ($this->permissions['edit'] || $this->permissions['delete']) : ?>
+                                <?php if ($this->permissions['delete']) : ?>
+                                    <a class="confirm"
+                                       href="<?= $this->url('storage_container', ['action' => 'delete', 'id' => $container->getId(), 'department' => $dep]); ?>"><img
+                                                src='/images/del.png' alt='Удалить'></a>
+                                    <a href="<?= $this->url('storage_container', ['action' => 'edit', 'id' => $container->getId(), 'department' => $dep]); ?>"><img
+                                                src='/images/edit.png' alt='Редактировать'></a>
+                                <?php endif; ?>
+                                <?php if ($this->permissions['edit']) : ?>
+                                    <a href="<?= $this->url($route, ['action' => 'add', 'id' => $shipment->getId(), 'container' => $container->getId(), 'department' => $dep]); ?>">+</a>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?= $container->getName(); ?>
+                        </td>
+                        <td>
+                            <table class="table-striped table-bordered" style="width: 100%;">
+                                <tbody>
+                                <?php foreach ($container->getItems() as $item) : ?>
+                                    <tr id="row<?= $item->getId() ?>">
+                                        <td style="padding-left: 5px;"><?= $item->getMetal()->getName(); ?>
+                                            &nbsp;<?= $item->getComment(); ?></td>
+                                        <td style="width:120px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($item->getWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                            &nbsp;кг.
+                                        </td>
+                                        <td style="width:200px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($item->getRealWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                            &nbsp;кг.
+                                        </td>
+                                        <?php if ($this->permissions['money']) : ?>
+                                            <td style="width:100px;text-align: right;padding-right: 5px;"><?= $this->currencyFormat($item->getCost(), 'RUR', null, 'ru_RU'); ?></td>
+                                            <td style="width:100px;text-align: right;padding-right: 5px;"><?= $this->currencyFormat($item->getSum(), 'RUR', null, 'ru_RU'); ?></td>
+                                        <?php endif; ?>
+                                        <?php if ($this->permissions['edit'] || $this->permissions['delete']) : ?>
+                                            <td style="width:70px;text-align: center;">
+                                                <?php if ($this->permissions['edit']) : ?>
+                                                    <a class="editItemBtn" id="item<?= $item->getId(); ?>" href="#"><img src='/images/edit.png' alt='Редактировать'></a>
+                                                <?php endif; ?>
+                                                <?php if ($this->permissions['delete']) : ?>
+                                                    <a class="confirm" href="<?= $this->url('storage_container_item', ['action' => 'delete', 'id' => $item->getId(), 'department' => $dep]); ?>">
+                                                        <img src='/images/del.png' alt='Удалить'></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <?php if ($container->getCountItems() > 1) : ?>
+                    <table style="width:100%;margin: 5px 0;">
+                        <tr>
+                            <td style="padding-left:5px;width: 100px;"></td>
+                            <td>
+                                <table style="width: 100%;">
+                                    <thead>
+                                    <tr id="shipment<?= $shipment->getId(); ?>">
+                                        <th style="padding-left: 5px;"></th>
+                                        <th style="width:120px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($container->getWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                            &nbsp;кг.
+                                        </th>
+                                        <th style="width:200px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($container->getRealWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                            &nbsp;кг.
+                                        </th>
+                                        <?php if ($this->permissions['money']) : ?>
+                                            <th style="width:100px;text-align: right;padding-right: 5px;"></th>
+                                            <th style="width:100px;text-align: right;padding-right: 5px;"></th>
+                                            <th style="width:100px;text-align: right;padding-right: 5px;"><?= $this->currencyFormat($container->getSum(), 'RUR', null, 'ru_RU'); ?></th>
+                                            <th style="width:70px;text-align: center;"></th>
+                                        <?php endif; ?>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <?php if (count($shipment->getContainers()) > 1) : ?>
+                <table style="width:100%;margin: 5px 0;" class="">
+                    <tr>
+                        <td style="padding-left:5px;width: 100px;"></td>
+                        <td>
+                            <table class="" style="width: 100%;">
+                                <thead>
+                                <tr id="shipment<?= $shipment->getId(); ?>">
+                                    <th style="padding-left: 5px;"></th>
+                                    <th style="width:120px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($shipment->getWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                        &nbsp;кг.
+                                    </th>
+                                    <th style="width:200px;text-align: right;padding-right: 5px;"><?= $this->numberFormat($shipment->getRealWeight(), NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                                        &nbsp;кг.
+                                    </th>
+                                    <?php if ($this->permissions['money']) : ?>
+                                        <th style="width:100px;text-align: right;padding-right: 5px;"></th>
+                                        <th style="width:100px;text-align: right;padding-right: 5px;"></th>
+                                        <th style="width:100px;text-align: right;padding-right: 5px;"><?= $this->currencyFormat($shipment->getSum(), 'RUR', null, 'ru_RU'); ?></th>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['edit'] || $this->permissions['delete']) : ?>
+                                        <th style="width:70px;text-align: center;"></th>
+                                    <?php endif; ?>
+                                </tr>
+                                </thead>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<table style="margin-top:20px;" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Металл</th>
+        <th>Масса</th>
+        <th>Фактическая масса</th>
+        <?php if ($this->permissions['money']) : ?>
+            <th>Средняя цена</th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($itemTotal as $item) : ?>
+        <tr>
+            <td><?= $item['metal']; ?></td>
+            <td><?= $this->numberFormat($item['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                &nbsp;кг.
+            </td>
+            <td><?= $this->numberFormat($item['real'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>
+                &nbsp;кг.
+            </td>
+            <?php if ($this->permissions['money']) : ?>
+                <td><?= $this->currencyFormat($item['avg'], 'RUR', null, 'ru_RU'); ?></td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

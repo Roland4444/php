@@ -1,0 +1,67 @@
+<h1>Остатки на складе</h1>
+
+<script>
+    $(document).ready(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url($this->route, ['action' => 'index','department' => $dep]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php foreach ($rows as $group) : ?>
+<table class="table table-bordered table-striped main-table">
+    <thead>
+        <th>Металл</th>
+        <th class="limitShowMobile">Приход</th>
+        <?php if ($this->hasAccess(Storage\Controller\ShipmentController::class, 'index')) :?>
+            <th class="limitShowMobile">Отгрузка</th>
+        <?php endif;?>
+        <?php if ($dep) :?>
+            <th class="limitShowMobile">Переброска</th>
+        <?php endif;?>
+        <th class="limitShowMobile">
+            Засор с портов
+        </th>
+        <th>Остаток</th>
+    </thead>
+    <tbody>
+        <?php foreach ($group['metals'] as $metal) :?>
+            <tr>
+                <td><?= $metal['name']?></td>
+                <td class="num limitShowMobile"><?= $this->numberFormat($metal['in'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <?php if ($this->hasAccess(Storage\Controller\ShipmentController::class, 'index')) :?>
+                    <td class="num limitShowMobile"><?= $this->numberFormat($metal['out'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <?php endif;?>
+                <?php if ($dep) :?>
+                    <td  class="limitShowMobile"><?= $this->numberFormat($metal['transfer'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <?php endif;?>
+                <td class="num limitShowMobile"><?= $this->numberFormat($metal['sub'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <td class="num"><?= $this->numberFormat($metal['balance'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+            </tr>
+        <?php endforeach;?>
+        <tr>
+            <td></td>
+            <td class="num limitShowMobile"></td>
+            <?php if ($this->hasAccess(Storage\Controller\ShipmentController::class, 'index')) :?>
+                <td class="num limitShowMobile"></td>
+            <?php endif;?>
+            <?php if ($dep) :?>
+                <td class="num limitShowMobile"></td>
+            <?php endif;?>
+            <td class="num limitShowMobile"></td>
+            <td class="total num"><?= $this->numberFormat($group['sum'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+        </tr>
+    </tbody>
+</table>
+<?php endforeach;?>
+<p class="total" style="text-align: right"><?= $this->numberFormat($total, NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</p>

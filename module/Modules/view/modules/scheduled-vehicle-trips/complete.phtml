@@ -1,0 +1,21 @@
+<?php $this->headTitle('Завершение передвижения техники'); ?>
+
+<h1><?= $this->escapeHtml('Завершение передвижения техники');?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('scheduledVehicleTrips', ['action' => 'complete', 'id' => isset($id) ? $id : null]));
+echo $this->partial('form.phtml');
+?>
+<script>
+
+    $(document).ready(function () {
+        $('#departureTime').datetimepicker({
+            locale: 'ru'
+        });
+        $('#arrivalTime').datetimepicker({
+            locale: 'ru'
+        });
+    });
+
+</script>

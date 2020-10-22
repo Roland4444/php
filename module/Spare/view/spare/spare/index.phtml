@@ -1,0 +1,66 @@
+<h1>Справочник запчастей</h1>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('sparesReference'));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if (! empty($permissions['add'])) : ?>
+    <a href="<?= $this->url('sparesReference', ['action' => 'add'])?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Изображения</th>
+            <th>Комментарий</th>
+            <th>Составное</th>
+            <th>Ед.&nbsp;изм.</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rows as $line) :?>
+            <tr>
+                <td><?= $line->getName(); ?></td>
+                <td>
+                    <?php if (! empty($line->getImages())) : ?>
+                        <?php foreach ($line->getImages() as $image) : ?>
+                            <a target="_blank" href="<?=$imagePath . $image->getFilename() ?>">
+                                <img class="thumbnail" src="<?=$imagePath . $image->getFilename() ?>">
+                            </a>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </td>
+                <td><?= $line->getComment(); ?></td>
+                <td style="text-align: center">
+                    <?php if ($line->getIsComposite()) :?>
+                        <strong style="color: red">&#10004;</strong>
+                    <?php else :?>
+                        &#10008;
+                    <?php endif;?>
+                </td>
+                <td><?= $line->getUnits(); ?></td>
+                <td class="action">
+                    <?php if (! empty($permissions['edit'])) : ?>
+                        <a href="<?= $this->url('sparesReference', ['action' => 'edit','id' => $line->getId()]); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'>
+                        </a>
+                    <?php endif; ?>
+                    <?php if (! empty($permissions['delete'])) : ?>
+                        <a class="confirm" href="<?= $this->url('sparesReference', ['action' => 'delete','id' => $line->getId()]); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

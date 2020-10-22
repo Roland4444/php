@@ -1,0 +1,12 @@
+<h1>Приход денег от трейдеров</h1>
+
+<?php $this->initScript('finance/trader-receipts'); ?>
+
+<div id="app">
+    <finance-trader-receipts
+            :permissions='<?= json_encode($permissions) ?>'
+            :banks='<?= json_encode($bankAccounts) ?>'
+            :traders='<?= json_encode($traders) ?>'
+            api-url="<?=$this->url($apiUrl) ?>"
+    />
+</div>

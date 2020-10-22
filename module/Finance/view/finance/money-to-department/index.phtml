@@ -1,0 +1,12 @@
+<h1>Расход в кассу</h1>
+
+<?php $this->initScript('finance/money-department'); ?>
+
+<div id="app">
+    <finance-money-department
+        :permissions='<?= json_encode($permissions) ?>'
+        :banks='<?= json_encode($bankAccounts) ?>'
+        :departments='<?= json_encode($departments) ?>'
+        api-url="<?=$this->url($apiUrl) ?>"
+    />
+</div>

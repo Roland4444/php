@@ -1,0 +1,14 @@
+<?php $this->initScript('spare/planning'); ?>
+
+<div id="app">
+    <spare-planning-form-panel
+            :cancel-uri="'<?=$cancelUri?>'"
+            :save-uri="'<?=$saveUri?>'"
+            :planning='<?=$planning?>'
+            :employees-object='<?=$employees?>'
+            :vehicles-object='<?=$vehicles?>'
+            :spares-object='<?=$jsonSpare?>'
+            :accesses='<?=$accesses ?>'
+    ></spare-planning-form-panel>
+</div>
+

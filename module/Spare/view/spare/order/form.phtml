@@ -1,0 +1,15 @@
+<?php $this->initScript('spare/order'); ?>
+<div id="app">
+    <spare-order-form-panel
+        :cancel-uri="'<?=$cancelUri?>'"
+        :save-uri="'<?=$saveUri?>'"
+        :start-date-from="'<?=$dateFrom?>'"
+        :start-date-to="'<?=$dateTo?>'"
+        :get-planning-uri="'<?=$getPlanningUri?>'"
+        :plannings-data='<?=$plannings?>'
+        :order='<?=$order?>'
+        :seller-list='<?=$sellers?>'
+        :spares-object='<?=$jsonSpare?>'
+        :roles='<?=$roles?>'
+    ></spare-order-form-panel>
+</div>

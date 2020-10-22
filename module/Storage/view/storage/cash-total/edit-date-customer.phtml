@@ -1,0 +1,32 @@
+<?php $title = 'Измененние даты сверки' ?>
+<?php $this->headTitle($title); ?>
+    <h1><?= $this->escapeHtml($title); ?></h1>
+
+<?php if ($error) : ?>
+    <p class="alert"><?= $error; ?></p>
+<?php endif; ?>
+
+<?php
+$form->setAttribute('action', $this->url($this->params['route'], ['action' => 'editDateCustomer', 'id' => $id]));
+$form->setAttribute('class', 'form-horizontal');
+?>
+<?= $this->form()->openTag($form); ?>
+    <div class="form-group <?= $this->formElementErrors($form->get('inspectionDate')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('inspectionDate')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('inspectionDate')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-4">
+            <?= $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
+<?= $this->form()->closeTag(); ?>
+
+<script>
+    $(document).ready(function(){
+        $('#inspectionDate').datepicker();
+    });
+</script>

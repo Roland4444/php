@@ -1,0 +1,93 @@
+<h1>Управленческие расходы</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $(".s2").select2();
+    });
+</script>
+<div class="filter">
+    <?php
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->setAttribute('action', $this->url($this->params['route'], ['department' => $this->params['currentDepartmentId']]));
+    ?>
+    <?= $this->form()->openTag($form); ?>
+    <div class="items">
+        <span><?= $this->formElement($form->get('startdate')); ?></span>
+        <span><?= $this->formElement($form->get('enddate')); ?></span>
+        <span><?= $this->formElement($form->get('comment')); ?></span>
+        <span><?= $this->formElement($form->get('category')); ?></span>
+        <span><?= $this->formElement($form->get('submit')); ?></span>
+    </div>
+    <?= $this->form()->closeTag(); ?>
+</div>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url($this->params['route'], ['action' => 'add', 'department' => $this->params['currentDepartmentId']]); ?>"
+       class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<?php foreach ($res as $day) : ?>
+    <div class="total"
+         style="margin-top: 20px;"><?= $this->dateFormat(DateTime::createFromFormat('Y-m-d', $day->getDate()), IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'ru_RU'); ?></div>
+    <table class="table table-bordered table-striped table-condensed main-table">
+        <thead>
+        <tr>
+            <th>Категория</th>
+            <th>Сумма</th>
+            <th>Комментарий</th>
+            <th>Дата расхода</th>
+            <?php if ($this->permissions['edit'] || $this->permissions['editPartial']) : ?>
+                <th></th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($day->getExpenses() as $item) : ?>
+            <tr <?= ! $item->getRealDate() ? 'class="alert"' : '' ?>>
+                <td class="category"><?= $item->getCategory()->getName(); ?></td>
+                <td class="num"><?= $this->currencyFormat($item->getMoney(), 'RUR', null, 'ru_RU'); ?></td>
+                <td><?= $item->getComment() ?></td>
+                <td class="date"><?= $item->getRealDate(); ?></td>
+                <?php if ($this->permissions['edit']) : ?>
+                    <td class="action">
+                        <a href="<?= $this->url($this->params['route'], ['action' => 'edit', 'id' => $item->getId(), 'department' => $dep]); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'></a>
+                        <a class="confirm" href="<?= $this->url($this->params['route'], ['action' => 'delete', 'id' => $item->getId(), 'department' => $dep]); ?>">
+                            <img src='/images/del.png' alt='Удалить'></a>
+                    </td>
+                <?php endif; ?>
+
+                <?php if (! $this->permissions['edit'] && $this->permissions['editPartial']) : ?>
+                    <td class="action">
+                        <?php if ($minEditDate <= new DateTime($item->getDate())) : ?>
+                            <a href="<?= $this->url($this->params['route'], [
+                                'action' => 'editPartial',
+                                'id' => $item->getId(),
+                                'department' => $dep
+                            ]); ?>">
+                                <img src='/images/edit.png' alt='Редактировать'>
+                            </a>
+                        <?php endif; ?>
+
+                    </td>
+                <?php endif; ?>
+
+            </tr>
+        <?php endforeach; ?>
+        <tr>
+            <td></td>
+            <td class="total num">
+                <?= $this->currencyFormat($day->getSum(), 'RUR', null, 'ru_RU') ?>
+            <td></td>
+            <td></td>
+            <?php if ($this->permissions['edit'] || $this->permissions['editPartial']) : ?>
+                <td></td>
+            <?php endif; ?>
+        </tr>
+        </tbody>
+    </table>
+<?php endforeach; ?>
+
+<p class="total">Общая сумма: <?= $this->currencyFormat($sum, 'RUR', null, 'ru_RU'); ?></p>

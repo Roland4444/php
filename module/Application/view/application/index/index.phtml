@@ -1,0 +1,5 @@
+<?php if ($last_login) : ?>
+    <h4>
+        Последняя авторизация в системе под именем пользователя <?= $last_login->getLogin() ?>: <?= $this->dateFormat(DateTime::createFromFormat('Y-m-d H:i:s', $last_login->getDate()), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM, 'ru_RU'); ?>
+    </h4>
+<?php endif; ?>

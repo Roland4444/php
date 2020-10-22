@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Documentation: http://docs.phinx.org/en/latest/intro.html
+ *
+ * ### The Migrate command runs all of the available migrations, optionally up to a specific version.
+ * php phinx migrate -e development_atdima
+ *
+ * ### You can rollback to the previous migration by using the rollback command with no arguments.
+ * php phinx rollback -e development_atdima
+ *
+ * ### To rollback all migrations to a specific version then use the --target parameter or -t for short.
+ * php phinx rollback -e development_atdima -t 20120103083322
+ *
+ * ### The Status command prints a list of all migrations, along with their current status. You can use this command to determine which migrations have been run.
+ * php phinx status -e development_atdima
+ *
+ * ### The Seed Run command runs all of the available seed classes or optionally just one.
+ * php phinx seed:run -e development_atdima
+ *
+ * ### To run only one seed class use the --seed parameter or -s for short.
+ * php phinx seed:run -e development_atdima -s MySeeder
+ */
+
+$app = require __DIR__ . '/vendor/robmorgan/phinx/app/phinx.php';
+
+// костыль, добавляем аргумент с окружением для команды seed:create что бы можно было его указать
+$commands = ['seed:create', 'create'];
+foreach ($commands as $command)
+{
+    $command = $app->get($command);
+    $command->addOption('--environment', '-e', \Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED, 'The target environment');
+}
+
+$app->run();

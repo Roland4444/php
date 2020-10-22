@@ -1,0 +1,27 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('action', $this->url('purchase_deal', ['action' => 'edit', 'department' => $departmentId, 'id' => $id]));
+?>
+
+<?= $this->form()->openTag($form); ?>
+
+<div class="form-group <?= $this->formElementErrors($form->get('comment')) ? 'error' : ''  ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('comment')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('comment')); ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3"></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('submit')); ?>
+    </div>
+</div>
+
+<?= $this->form()->closeTag(); ?>

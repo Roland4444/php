@@ -1,0 +1,12 @@
+<?php $this->initScript('spare/inventory'); ?>
+<div id="app">
+    <spare-inventory-form-panel
+        :enable-saving='<?=$enableSaving?>'
+        :cancel-uri="'<?=$cancelUri?>'"
+        :save-uri="'<?=$saveUri?>'"
+        :spare-list='<?=$spareList?>'
+        :spare-total='<?=$spareTotal?>'
+        :inventory='<?=$inventory?>'
+        :roles='<?=$roles?>'
+    ></spare-inventory-form-panel>
+</div>

@@ -1,0 +1,77 @@
+<?php $this->headTitle('Факторинг - Переуступка долга :: '); ?>
+<h1>Факторинг - Оплата</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$this->form->setAttribute('class', 'form-inline form-filter');
+$this->form->setAttribute('action', $this->url('factoring_assignment_debt'));
+?>
+
+<?= $this->form()->openTag($this->form) ?>
+<?php foreach ($this->form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<?php if ($permissions['add']) : ?>
+    <a href="<?= $this->url('factoring_assignment_debt', ['action' => 'add'])?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Контрагент</th>
+        <th>Факторинг</th>
+        <th>Сумма</th>
+        <?php if ($permissions['edit']) : ?>
+            <th></th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data['items'] as $item) : ?>
+        <tr>
+            <td class="date"><?= $item->getDate(); ?></td>
+            <td class="date"><?= $item->getProvider()->getTitle(); ?></td>
+            <td class="date"><?= $item->getTrader()->getName(); ?></td>
+            <td class="num"><?= $this->currencyFormat($item->getMoney(), 'RUR', null, 'ru_RU'); ?></td>
+            <?php if ($permissions['edit']) : ?>
+                <td class="action">
+                    <a href="<?= $this->url('factoring_assignment_debt', ['action' => 'edit','id' => $item->getId()])?>">
+                        <img
+                            src='/images/edit.png'
+                            alt='Редактировать'
+                        >
+                    </a>
+                    <a
+                        class="confirm"
+                        href="<?= $this->url('factoring_assignment_debt', ['action' => 'delete','id' => $item->getId()])?>"
+                    >
+                        <img
+                            src='/images/del.png'
+                            alt='Удалить'
+                        >
+                    </a>
+                </td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="total num"><?= $this->currencyFormat($data['sum'], 'RUR', null, 'ru_RU'); ?></td>
+        <?php if ($permissions['edit']) : ?>
+            <td></td>
+        <?php endif; ?>
+    </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,12 @@
+<?php $this->headTitle('Экспорт с площадки/Переброска')?>
+<h1>Экспорт с площадки/Переброска</h1>
+
+<?php $this->initScript('reports/export'); ?>
+
+<div id="app">
+    <export-table
+        :access-delete="<?= $this->accessDelete ?>"
+        api-url="<?=$this->url('reportDepExport') ?>"
+        :departments='<?= $departments ?>'
+    ></export-table>
+</div>

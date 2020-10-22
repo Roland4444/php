@@ -1,0 +1,39 @@
+<h1>Остатки в кассе</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url($this->route));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<table class="table table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Приход в кассу</th>
+            <th>Расходы</th>
+            <th>Выезды техники</th>
+            <th>Остаток</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: center;"><?= $this->currencyFormat($cashIn, 'RUR', null, 'ru_RU');  ?></td>
+            <td style="text-align: center;"><?= $this->currencyFormat($expense, 'RUR', null, 'ru_RU'); ?></td>
+            <td style="text-align: center;"><?= $this->currencyFormat($transport, 'RUR', null, 'ru_RU'); ?></td>
+            <td style="text-align: center;"><?= $this->currencyFormat($total, 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+    </tbody>
+</table>
+

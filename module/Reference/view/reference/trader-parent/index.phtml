@@ -1,0 +1,31 @@
+<h1>Группы трейдеров</h1>
+
+<a href="<?= $this->url('reference\traderParent', ['action' => 'add'])?>" class="btn btn-default">Добавить</a>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Порядковый номер</th>
+            <th>Скрывать</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rows as $line) :?>
+            <tr>
+                <td><?= $line->getName(); ?></td>
+                <td><?= $line->getOrder(); ?></td>
+                <td><?= $line->isHide() ? "да" : "нет" ?></td>
+                <td class="action">
+                    <a href="<?= $this->url('reference\traderParent', ['action' => 'edit','id' => $line->getId()]); ?>">
+                        <img src='/images/edit.png' alt='Редактировать'>
+                    </a>
+                    <a class="confirm" href="<?= $this->url('reference\traderParent', ['action' => 'delete','id' => $line->getId()]); ?>">
+                        <img src='/images/del.png' alt='Удалить'>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

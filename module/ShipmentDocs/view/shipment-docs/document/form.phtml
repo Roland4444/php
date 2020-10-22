@@ -1,0 +1,20 @@
+<?php $this->initScript('shipmentdoc/document'); ?>
+
+<div id="app">
+    <shipmentdoc-add
+            :drivers-prop='<?= $drivers ?>'
+            :owners-prop='<?= $owners ?>'
+            :receivers='<?= $receivers ?>'
+            :shipment-doc-prop='<?= isset($shipmentDoc) ? $shipmentDoc : "undefined" ?>'
+            :pdf-packing-list-url="'<?= $this->url('shipmentDocs/document', ['action' => 'pdf-packing-list']) ?>'"
+            :pdf-transport-waybill-url="'<?= $this->url('shipmentDocs/document', ['action' => 'pdf-transport-waybill']) ?>'"
+            :pdf-packing-transport-url="'<?= $this->url('shipmentDocs/document', ['action' => 'pdf-packing-transport']) ?>'"
+            :pdf-letter-of-authority-url="'<?= $this->url('shipmentDocs/document', ['action' => 'pdf-letter-of-authority']) ?>'"
+            :pdf-explosive-radiation-certificate-url="'<?= $this->url('shipmentDocs/document', ['action' => 'pdf-explosive-radiation-certificate']) ?>'"
+            :save-driver-url="'<?= $this->url('shipmentDocs/driver', ['action' => 'save']) ?>'"
+            :save-receiver-url="'<?= $this->url('shipmentDocs/receiver', ['action' => 'save']) ?>'"
+            :api-url="'<?=$this->url('shipmentDocs') ?>'"
+            :save-document-url="'<?= $this->url('shipmentDocs/document', ['action' => 'save']) ?>'"
+            :get-containers-url="'<?= $this->url('storage_container', ['action' => 'get-color-departments-containers-by-date']) ?>'"
+    ></shipmentdoc-add>
+</div>

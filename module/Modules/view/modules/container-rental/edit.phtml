@@ -1,0 +1,51 @@
+<?php
+    $title = 'Редактировать оплату за СЭЗ';
+    $this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title); ?></h1>
+<?php
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('action', $this->url('containerRental', ['action' => 'edit','id' => $id]));
+$form->prepare();
+?>
+<?= $this->form()->openTag($form); ?>
+
+<div class="form-group <?= $this->formElementErrors($form->get('date_formal')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('date_formal')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('date_formal')); ?>
+        <?php if ($this->formElementErrors($form->get('date_formal'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($form->get('date_formal')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="form-group <?= $this->formElementErrors($form->get('money')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('money')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('money')); ?>
+        <?php if ($this->formElementErrors($form->get('money'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($form->get('money')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="form-group <?= $this->formElementErrors($form->get('is_paid')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('is_paid')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('is_paid')); ?>
+        <?php if ($this->formElementErrors($form->get('is_paid'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($form->get('is_paid')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+        <?= $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+
+<?= $this->form()->closeTag(); ?>

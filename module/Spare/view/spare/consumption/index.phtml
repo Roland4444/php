@@ -1,0 +1,82 @@
+<h1>Списание</h1>
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $(".s2").select2();
+    });
+</script>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('spareConsumption', [
+'warehouse' => $params['warehouse'],
+]));
+?>
+<?= $this->form()->openTag($form) ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+<p>
+    <?php if (! empty($permissions['add'])) : ?>
+        <a href="<?= $this->url('spareConsumption', array_merge(['action' => 'add'], $params))?>"
+           class="btn btn-default">
+            Добавить
+        </a>
+    <?php endif; ?>
+    <span style="margin-left: 10px">Итого: <strong><?= $totalQuantity ?></strong></span>
+</p>
+<?php foreach ($consumptions as $consumption) : ?>
+    <span style="font-weight: bold;" class="date"><?= $consumption->getDate() ?></span></span> №<?= $consumption->getId()?>
+    <span style="font-weight: bold;">Сотрудник:</span> <?= $consumption->getEmployee()->getName() ?: ' ' ?>
+    <span style="font-weight: bold;">Склад:</span> <?= $consumption->getWarehouse()->getName() ?: ' ' ?>
+    <td class="action notPrint">
+        <a target="_blank" href="<?= $this->url('spareConsumption', array_merge(
+            ['action' => 'export-to-pdf', 'id' => $consumption->getId()],
+            $params
+        )); ?>">
+            <img src='/images/save.png' alt='Экспортировать в pdf'>
+        </a>
+    </td>
+    <?php if (! empty($permissions['edit'])) : ?>
+        <a href="<?= $this->url('spareConsumption', array_merge(
+            ['action' => 'edit', 'id' => $consumption->getId()],
+            $params
+        )); ?>">
+            <img src='/images/edit.png' alt='Редактировать'>
+        </a>
+    <?php endif; ?>
+    <?php if ($permissions['delete']) : ?>
+        <a class="confirm" href="<?= $this->url('spareConsumption', array_merge([
+                'action' => 'delete', 'id' => $consumption->getId()
+            ], $params)); ?>">
+            <img src='/images/del.png' alt='Удалить'>
+        </a>
+    <?php endif; ?>
+    <table class="table table-striped table-bordered main-table">
+        <thead>
+        <tr>
+            <th style="width: 20%;">Запчасть</th>
+            <th style="width: 15%;">Количество</th>
+            <th style="width: 20%;">Техника</th>
+            <th style="width: 25%;">Комментарий</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($consumption->getItems() as $consumptionItem) : /**@var \Spare\Entity\ConsumptionItem $consumptionItem*/?>
+            <tr>
+                <td><?= $consumptionItem->getSpare()->getName() ?></td>
+                <td><?= $consumptionItem->getQuantity() ?></td>
+                <td><?= empty($consumptionItem->getVehicle()) ? '-' : $consumptionItem->getVehicle()->getName() ?></td>
+                <td><?= $consumptionItem->getComment() ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endforeach; ?>
+
+

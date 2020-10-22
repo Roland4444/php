@@ -1,0 +1,8 @@
+<?php $this->headTitle('Поступления денег от выездов техники')?>
+<h1>Поступления денег от выездов техники</h1>
+
+<?php $this->initScript('office_cash/transport_income'); ?>
+
+<div id="app">
+    <transport-income-list api-url="<?=$this->url('office_transport_income') ?>" :access='<?= $access ?>' />
+</div>

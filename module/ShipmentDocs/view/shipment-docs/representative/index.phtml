@@ -1,0 +1,59 @@
+<h1>Реквизиты компании</h1>
+
+<?php if (! empty($errors)) : ?>
+    <ul>
+        <?php foreach ($errors as $error) : ?>
+            <li class="validation-error-message"><?= $error ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+<?php if (! empty($data)) : ?>
+<form action="<?= $this->url('shipmentDocs/representative', ['action' => 'update']); ?>" class="form-horizontal form-add" method="post">
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="name">ФИО</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="name" name="name" class="form-control" value="<?= htmlentities($data['name']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="short_name">ФИО сокращенно</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="short_name" name="short_name" class="form-control" value="<?= htmlentities($data['short_name']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="certificate">Удостоверение</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="certificate" name="certificate" class="form-control" value="<?= htmlentities($data['certificate']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="verify_date">Дата проверки</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="verify_date" name="verify_date" class="form-control" value="<?= htmlentities($data['verify_date']) ?>">
+        </div>
+    </div>
+    <input type="hidden" id="id" name="id" class="form-control" value="<?= $data['id'] ?>">
+
+    <button class="btn btn-default" type="submit">Сохранить</button>
+</form>
+<?php endif; ?>
+<style>
+    .inputs {
+        margin-bottom: 20px;
+    }
+
+    .validation-error-message {
+        color: #ff0000;
+        font-size: 10pt
+    }
+</style>

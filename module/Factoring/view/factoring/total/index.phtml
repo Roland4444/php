@@ -1,0 +1,43 @@
+<?php $this->headTitle('Факторинг - Сверка :: '); ?>
+<h1>Факторинг - Сверка</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$this->form->setAttribute('class', 'form-inline form-filter');
+$this->form->setAttribute('action', $this->url('factoring_total'));
+?>
+
+<?= $this->form()->openTag($this->form) ?>
+    <?php foreach ($this->form as $element) : ?>
+        <?= $this->formElement($element) ?>&nbsp;
+    <?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Факторинг</th>
+        <th>Реализация</th>
+        <th>Переуступка долга</th>
+        <th>Оплата</th>
+        <th>Задолженность</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="date"><?= $this->data['provider']->getTitle(); ?></td>
+        <td class="num"><?= $this->currencyFormat($this->data['sales'], 'RUR', null, 'ru_RU'); ?></td>
+        <td class="num"><?= $this->currencyFormat($this->data['assignmentDebt'], 'RUR', null, 'ru_RU'); ?></td>
+        <td class="num"><?= $this->currencyFormat($this->data['payment'], 'RUR', null, 'ru_RU'); ?></td>
+        <td class="num"><?= $this->currencyFormat($this->data['sum'], 'RUR', null, 'ru_RU'); ?></td>
+    </tr>
+    </tbody>
+</table>
+
+

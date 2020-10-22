@@ -1,0 +1,56 @@
+<h1>Приход в кассу</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url($this->params['route'], ['department' => $this->params['currentDepartmentId']]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url($this->params['route'], ['action' => 'add', 'department' => $this->params['currentDepartmentId']]); ?>"
+       class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<table class="table table-striped table-bordered main-table" style="width: 400px;">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Сумма</th>
+        <?php if ($this->permissions['edit']) : ?>
+            <th></th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data['items'] as $line) : ?>
+        <tr>
+            <td class="date"><?= $line['date']; ?></td>
+            <td class="num"><?= $line['amount']; ?></td>
+            <?php if ($this->permissions['edit']) : ?>
+                <td class="action"><a href="<?= $this->url($this->params['route'], ['action' => 'edit', 'department' => $this->params['currentDepartmentId'], 'id' => $line['id']]) ?>"><img class="mybtn" src='/images/edit.png' alt='Редактировать'"></a></td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td></td>
+        <td class="total num"><?= $data['sum']; ?></td>
+        <?php if ($this->permissions['edit']) : ?>
+            <td></td>
+        <?php endif; ?>
+    </tr>
+    </tbody>
+</table>

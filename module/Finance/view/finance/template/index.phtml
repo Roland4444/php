@@ -1,0 +1,51 @@
+<?php
+$title = "Импорт из банк клиента";
+$this->headTitle($title);
+?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<form method="post" enctype="multipart/form-data" action="<?= $this->url($indexRoute) ?>">
+    <p>Загрузить файл:</p>
+    <input  style="width: 500px;float: left;" class="form-control" name="file" accept=".txt" type="file">
+    <input class="btn btn-default" name="submit" type="submit" value="Загрузить"></p>
+</form>
+
+<p class="text-danger"><?= $error ?></p>
+<p c lass="text-warning">
+    <?php foreach ($messages as $msg) : ?>
+        <?= $msg; ?><br>
+    <?php endforeach; ?>
+</p>
+
+<?php if ($permissions['add']) : ?>
+    <a href="<?= $this->url($indexRoute, ['action' => 'add']) ?>" class="btn btn-default">Добавить
+        шаблон</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Категория</th>
+            <th>ИНН</th>
+            <th>Шаблон</th>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($templates as $line) : ?>
+            <tr>
+                <td><?= $line->getCategory()->getName() ?></td>
+                <td><?= $line->getInn() ?></td>
+                <td><?= $line->getText() ?></td>
+                <td>
+                    <a href="<?= $this->url($indexRoute, ['action' => 'edit', 'id' => $line->getId()]) ?>"><img
+                                src='/images/edit.png' alt='Редактировать'></a>
+                    <a class="confirm"
+                       href="<?= $this->url($indexRoute, ['action' => 'delete', 'id' => $line->getId()]) ?>"><img
+                                src='/images/del.png' alt='Удалить'></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

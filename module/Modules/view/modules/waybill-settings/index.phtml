@@ -1,0 +1,22 @@
+<h1>Настройки путевых листов</h1>
+<a href="<?= $this->url('waybills'); ?>" >Вернуться назад</a>
+
+<form action="<?= $this->url('waybillSettings') ?>" class="form-horizontal form-add" method="post">
+    <div class="p-3 mb-2 bg-danger text-white" style="text-align: center; margin: 5px"><?= $message; ?></div>
+    <?php foreach ($settings as $setting) : ?>
+        <div class="form-group ">
+            <label class="col-sm-3 control-label"><?= $setting->getLabel()?></label>
+            <div class="col-sm-4">
+                <input type="text" name="<?= $setting->getName(); ?>" class="form-control" value="<?= $setting->getValue(); ?>">
+            </div>
+        </div>
+    <?php endforeach; ?>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label"> </label>
+        <div class="col-sm-4">
+            <input name="submit" type="submit" class="btn btn-default" id="submitbutton" value="Сохранить">
+        </div>
+    </div>
+
+</form>

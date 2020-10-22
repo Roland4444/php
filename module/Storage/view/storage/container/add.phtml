@@ -1,0 +1,21 @@
+<?php
+    $containerForm->setAttribute('class', 'form-horizontal');
+    $containerForm->setAttribute('action', $this->url($route, ['action' => $action, 'id' => $id, 'department' => $dep]));
+?>
+
+<?= $this->form()->openTag($containerForm) ?>
+
+<?php foreach ($formElements as $elName) : ?>
+    <?php $element = $containerForm->get($elName); ?>
+    <div class="<?= $elName == 'name' ? 'wagon' : '' ?> form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($element); ?>
+            <?php if ($this->formElementErrors($element)) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($element); ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<?= $this->form()->closeTag(); ?>

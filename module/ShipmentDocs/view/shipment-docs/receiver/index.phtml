@@ -1,0 +1,43 @@
+<h1>Покупатели</h1>
+
+<?php if (! empty($error)) : ?>
+    <p class="validation-error-message"><?= $error ?></p>
+<?php endif; ?>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<?php if (! empty($permissions['add'])) : ?>
+    <a href="<?= $this->url('shipmentDocs/receiver', ['action' => 'add']); ?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Юр. наименование</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if (! empty($data)) : ?>
+        <?php foreach ($data as $receiver) : ?>
+            <tr>
+                <td><?= $receiver['name'] ?></td>
+                <td><?= $receiver['legal_name'] ?></td>
+                <td>
+                    <?php if (! empty($permissions['edit'])) : ?>
+                        <a href="<?= $this->url('shipmentDocs/receiver', ['action' => 'edit','id' => $receiver['id']]); ?>">
+                            <img src='/images/edit.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                    <?php if (! empty($permissions['delete'])) : ?>
+                        <a class="confirm" href="<?= $this->url('shipmentDocs/receiver', ['action' => 'delete','id' => $receiver['id']]); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </tbody>
+</table>

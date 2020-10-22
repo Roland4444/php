@@ -1,0 +1,49 @@
+<?php
+if ($this->hasAccess(Storage\Controller\ShipmentController::class, 'edit')) {
+    $shipmentForm->prepare();
+}
+    $shipmentForm->setAttribute('class', 'form-horizontal');
+?>
+<?= $this->form()->openTag($shipmentForm); ?>
+<?= $this->formHidden($shipmentForm->get('type')); ?>
+
+<div class="form-group <?= $this->formElementErrors($shipmentForm->get('date')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $shipmentForm->get('date')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->hasAccess(Storage\Controller\ShipmentController::class, 'edit')) {
+            $shipmentForm->get('date')->setAttributes(['readonly' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($shipmentForm->get('date')); ?>
+        <?php if ($this->formElementErrors($shipmentForm->get('date'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($shipmentForm->get('date')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="form-group <?= $this->formElementErrors($shipmentForm->get('trader')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $shipmentForm->get('trader')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($shipmentForm->get('trader')); ?>
+    </div>
+</div>
+<div class="form-group <?= $this->formElementErrors($shipmentForm->get('tariff')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $shipmentForm->get('tariff')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($shipmentForm->get('tariff')); ?>
+    </div>
+</div>
+<div class="form-group <?= $this->formElementErrors($shipmentForm->get('rate')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $shipmentForm->get('rate')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($shipmentForm->get('rate')); ?>
+    </div>
+</div>
+<div class="form-group <?= (! empty($element) && ! empty($this->formElementErrors($element))) ? 'error' : ''; ?>">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+        <?= $this->formElement($shipmentForm->get('submit')->setValue('Далее')); ?>
+    </div>
+</div>
+
+<?= $this->form()->closeTag(); ?>

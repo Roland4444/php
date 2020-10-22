@@ -1,0 +1,39 @@
+<?php $this->initScript('reports/weighing'); ?>
+
+<h1>Взвешивания</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('weighing'));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<div id="app">
+    <weighing-list
+        :weighings='<?= $weighings ?>'
+        :customers='<?= $customers ?>'
+        :departments='<?= $departments ?>'
+        :current-department='<?= $userDepartment ?>'
+        :full-access="<?=(int) $fullAccess?>"
+        :delete-url="'<?= $this->url('weighing', ['action' => 'delete']) ?>'"
+        :delete-item-url="'<?= $this->url('weighing', ['action' => 'deleteItem']) ?>'"
+        :update-url="'<?= $this->url('weighing', ['action' => 'update']) ?>'"
+        :pay-url="'<?= $this->url('storageMetalExpense', ['action' => 'pay-weighing', 'department' => '0']) ?>'"
+        :purchase-save-url="'<?= $this->url('purchase', ['action' => 'save-by-weighing']) ?>'"
+        :full-image-url="'<?= $this->url('weighing', ['action' => 'image-full']) ?>'"
+        :thumbnail-image-url="'<?= $this->url('weighing', ['action' => 'image-preview']) ?>'"
+        :weighings-groupped-by-metal='<?= $weighingsGrouppedByMetal ?>'
+    ></weighing-list>
+</div>

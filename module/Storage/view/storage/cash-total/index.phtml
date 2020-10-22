@@ -1,0 +1,105 @@
+<h1>Остатки в кассе</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<table class="table table-bordered main-table">
+    <thead>
+        <tr>
+            <th>Приход в кассу</th>
+            <th>Расходы на метал</th>
+            <th>Остаток</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: center;"><?= $this->currencyFormat($total['cash-in'], 'RUR', null, 'ru_RU');  ?></td>
+            <td style="text-align: center;"><?= $this->currencyFormat($total['metalExpense'], 'RUR', null, 'ru_RU'); ?></td>
+            <td style="text-align: center;"><?= $this->currencyFormat($total['total'], 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url($this->route, ['department' => $dep]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Контрагент</th>
+        <th>Приход</th>
+        <th>Оплата</th>
+        <?php if (! $dep) :?>
+            <th>Официальный остаток</th>
+        <?php endif; ?>
+        <th>Фактический остаток</th>
+
+        <?php if ($hasInspectionDate) :?>
+            <th>Последняя дата сверки</th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data as $customerData) : ?>
+            <?php
+            $class = $customerData->getRowClass();
+
+            ?>
+            <tr class="<?= $class; ?>" >
+                <td
+                    <?php if ($customerData->isLegal()) : ?>
+                        style="color: green; font-weight: bold;"
+                    <?php endif; ?>
+                >
+                    <?= $customerData->getCustomerName(); ?>
+                </td>
+                <td class="num"><?= $this->currencyFormat($customerData->getPurchaseFactForAmountSum(), 'RUR', null, 'ru_RU'); ?></td>
+                <td class="num"><?= $this->currencyFormat($customerData->getPaymentSum(), 'RUR', null, 'ru_RU'); ?></td>
+                <?php if (! $dep) :?>
+                    <td class="num">
+                        <?= $this->currencyFormat($customerData->getFormalBalance(), 'RUR', null, 'ru_RU'); ?>
+                    </td>
+                <?php endif; ?>
+                <td class="num"><?= $this->currencyFormat($customerData->getFactBalance(), 'RUR', null, 'ru_RU'); ?></td>
+
+                <?php if ($hasInspectionDate) : ?>
+                    <td>
+                        <?= $customerData->getInspectionDate(); ?>
+                        <a href="<?= $this->url('storageCashTotal', ['action' => 'editDateCustomer', 'id' => $customerData->getCustomerId()]); ?>">
+                            <img src='/images/edit.png' alt='Удалить'>
+                        </a>
+                    </td>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+
+            <?php if (! $dep) : ?>
+                <td> </td>
+            <?php endif; ?>
+
+            <td class="total num"><?= $this->currencyFormat($data->getBalance(), 'RUR', null, 'ru_RU'); ?></td>
+
+            <?php if ($hasInspectionDate) :?>
+                <td> </td>
+            <?php endif; ?>
+
+        </tr>
+    </tbody>
+</table>

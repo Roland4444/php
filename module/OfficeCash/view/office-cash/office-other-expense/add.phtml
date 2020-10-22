@@ -1,0 +1,93 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<script>
+    $(document).ready(() => {
+        $('#category').select2();
+    });
+</script>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url($this->params['route'], [
+    'action' => $this->currentRoute()->getAction(),
+    'department' => $this->params['currentDepartmentId'],
+    'id' => $id ?? null
+]));
+$form->setAttribute('class', 'form-horizontal');
+if ($this->permissions['delete']) {
+    $form->prepare();
+} else {
+    echo "
+        <script>
+            $(document).ready(() => {
+                $('#realdate').datepicker();
+            });
+        </script>
+    ";
+}
+
+$invalidField = '<div class="text-danger">Поле заполнено некорректно</div>';
+?>
+
+<?= $this->form()->openTag($form); ?>
+
+<?php $element = $form->get('date'); ?>
+<div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['delete']) {
+            $element->setAttributes(['readonly' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($element); ?>
+        <?= $this->formElementErrors($element) ? $invalidField : '' ?>
+    </div>
+</div>
+
+<?php $element = $form->get('category'); ?>
+<div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($element); ?>
+        <?= $this->formElementErrors($element) ? $invalidField : '' ?>
+    </div>
+</div>
+
+<?php $element = $form->get('comment'); ?>
+<div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($element); ?>
+        <?= $this->formElementErrors($element) ? $invalidField : '' ?>
+    </div>
+</div>
+
+<?php $element = $form->get('realdate'); ?>
+<div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($element); ?>
+        <?= $this->formElementErrors($element) ? $invalidField : '' ?>
+    </div>
+</div>
+
+<?php $element = $form->get('money'); ?>
+<div class="form-group <?= $this->formElementErrors($element) ? 'has-error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $element->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($element); ?>
+        <?= $this->formElementErrors($element) ? $invalidField : '' ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-3 "></div>
+    <div class="col-sm-4">
+        <?= $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+
+<?= $this->form()->closeTag(); ?>

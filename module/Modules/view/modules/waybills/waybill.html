@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Путевой лист</title>
+</head>
+<style>
+    body {
+        font-family: DejaVu Sans;
+    }
+
+    @page {
+        margin: 7mm;
+    }
+
+    .firstLine {
+        height: 30mm;
+        width: 200mm;
+        margin-left: 25mm;
+        font-size: 11px;
+        position: relative;
+    }
+    .firstLine .left {
+        position: absolute;
+        width: 25mm;
+        top: -5mm;
+        left: -25mm;
+    }
+    .firstLine .left p {
+        margin-top: 10mm;
+    }
+    .firstLine .right {
+        position: absolute;
+        width: 60mm;
+        top: -5mm;
+        right: -60mm;
+    }
+    .firstLine .right p {
+        margin: 2mm 0;
+    }
+    .firstLine .topTable {
+        width: 100mm;
+        margin: auto;
+    }
+    .firstLine .org {
+        font-size: 8px;
+    }
+    .firstLine td,
+    .firstLine table,
+    .inLinTable,
+    .codes,
+    .codes2,
+    .pdftable,
+    .fuelMovement,
+    .driversTask,
+    .taskList{
+        border-spacing: 0;
+        padding: 0;
+    }
+    .secondLine {
+        font-size: 10px;
+        margin-top: 20mm;
+    }
+    .secondLine .left {
+        width: 140mm;
+        position: relative;
+    }
+    .secondLine .left .codes {
+        text-align: right;
+        position: absolute;
+        top: -18mm;
+        right: 35mm;
+        background: #fff;
+
+    }
+    .secondLine .left .codes2 {
+        text-align: right;
+        position: absolute;
+        top: 34mm;
+        right: 35mm;
+        background: #fff;
+    }
+    .secondLine .left .codes2 td {
+        height: 6mm;
+    }
+    .secondLine .lineElements {
+        width: 105mm;
+    }
+    .secondLine .right {
+        position: absolute;
+        width: 130mm;
+        top: 32mm;
+        right: 0;
+    }
+    .pdftable, .fuelMovement, .driversTask, .taskList, .worksResult {
+        width: 100%;
+        text-align: center;
+        border: double 1mm #000;
+        font-size: 10px;
+    }
+    .borderTD td, .pdftable td, .fuelMovement td, .driversTask td, .taskList td {
+        border: 0.1mm solid #000;
+    }
+    .fuelMovement {
+        margin-top: 5mm;
+    }
+    .driversTask {
+        width: 100%;
+        margin-top: 5mm;
+    }
+    .bottomLines {
+        font-size: 7px;
+    }
+    .inLinTable .pr {
+        padding-right: 3mm;
+    }
+    .inLinTable {
+        width: 100%;
+    }
+    .bottomLines {
+        margin-top: 7mm;
+        position: relative;
+    }
+    .bottomLines table {
+        width: 100%;
+    }
+    .bottomLines .left {
+        width: 85mm;
+    }
+    .bottomLines .center {
+        width: 110mm;
+    }
+    .bottomLines .right {
+        width: 85mm;
+    }
+    .bottomLines .right td {
+        padding-top: 5mm;
+    }
+    .passAuto{
+        font-size: 11px;
+        width: 163mm;
+        text-align: center;
+        border-spacing: 0;
+        padding: 0;
+    }
+    .blockPassAuto{
+        margin-left: 115mm;
+    }
+    .remark table{
+        font-size: 11px;
+        width: 110mm;
+        text-align: center;
+        border-spacing: 0;
+        padding: 0;
+    }
+    .tracing{
+        position: relative;
+    }
+    .stoppage {
+        position: absolute;
+        width: 164mm;
+        top: 0;
+        left: 114mm;
+    }
+    .stoppage table{
+        width: 100%;
+        text-align: center;
+        border-spacing: 0;
+        padding: 0;
+        border: double 1mm #000;
+        font-size: 10px;
+    }
+    .worksResult{
+        width: 100%;
+        text-align: center;
+        border-spacing: 0;
+        padding: 0;
+        border: double 1mm #000;
+        font-size: 9px;
+        margin-top: 4mm;
+    }
+    .endTable{
+        width: 100%;
+        text-align: center;
+        border-spacing: 0;
+        padding: 0;
+        font-size: 10px;
+        margin-top: 2mm;
+    }
+    .bw {
+        border: 0.4mm solid #000;
+    }
+    .bb01 {
+        border-bottom: 0.1mm solid #000;
+    }
+    .bt01 {
+        border-top: 0.1mm solid #000;
+    }
+    .bottomText {
+        font-size: 6px;
+        text-align: center;
+    }
+    .tal {
+        text-align: left;
+    }
+    .tar {
+        text-align: right;
+    }
+    .tac {
+        text-align: center;
+    }
+    .vat {
+        vertical-align: top;
+    }
+    .page_break {
+        page-break-before: always;
+    }
+
+
+</style>
+
+<body>
+<!--Первая линия-->
+<div class="firstLine">
+    <!--Левый блок-->
+    <div class="left">
+        <p>Место штампа организации</p>
+        <p>Организация</p>
+    </div>
+    <!--Основная надпись-->
+    <table class="topTable">
+        <tr>
+            <td colspan="4" class="tac">ПУТЕВОЙ ЛИСТ</td>
+        </tr>
+        <tr>
+            <td style="width: 35mm;">грузового автомобиля</td>
+            <td class="bb01 tac"> </td>
+            <td class="tac" width="10">№</td>
+            <td class="bb01 tac">{_______number}</td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td class="bottomText">(серия)</td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    </table>
+    <p class="tac">Срок действия путевого листа с {____dateStart} по {______dateEnd}</p>
+
+    <table class="org">
+        <tr>
+            <td class="bb01">{__nameCompany}</td>
+        </tr>
+        <tr>
+            <td class="bottomText">(наименование, адрес и номер телефона)</td>
+        </tr>
+    </table>
+
+    <!--Правый блок-->
+    <div class="right">
+        <p>Типовая межотраслевая форма № 4-С</p>
+        <p>Утверждена постановлением Госкомстата России от 28.11.97 № 78</p>
+
+        <table>
+            <tr>
+                <td> </td>
+                <td class="tac bw bb01" style="width: 33mm">Коды</td>
+            </tr>
+            <tr>
+                <td>Форма по ОКУД</td>
+                <td class="tac bw bb01">0345004</td>
+            </tr>
+            <tr>
+                <td class="tar">по ОКПО </td>
+                <td class="bw bt01"> </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<!--Конец первой линия-->
+
+<!--Начало второй линии-->
+<div class="secondLine">
+    <!--Начало левой колонки-->
+    <div class="left">
+        <div class="lineElements">
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 27mm;">Марка автомобиля</td>
+                    <td class="bb01"><strong>{_____markAuto}</strong></td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 47mm">Государственный номерной знак</td>
+                    <td class="bb01"><strong>{_____numbAuto}</strong></td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 14mm">Водитель</td>
+                    <td class="bb01"><strong>{_______driver}</strong></td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td class="bottomText">(фамилия, имя, отчество)</td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 27mm">Удостоверение №</td>
+                    <td class="bb01"><strong>{driverLicense}</strong></td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 37mm">Лицензионная карточка</td>
+                    <td class="bb01"><strong>стандартная, ограниченная</strong></td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td class="bottomText">(ненужное зачеркнуть)</td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 30mm">Регистрационный №</td>
+                    <td width="5px">Серия</td>
+                    <td class="bb01 tac"><strong> </strong></td>
+                    <td width="5px">№</td>
+                    <td class="bb01 tac"></td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 14mm"> </td>
+                    <td class="bb01 tac"></td>
+                    <td style="width: 47mm">Государственный номерной знак</td>
+                    <td class="bb01 tac"></td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td class="bottomText">(марка)</td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+
+            <table class="inLinTable">
+                <tr>
+                    <td class="pr" style="width: 14mm"> </td>
+                    <td class="bb01 tac"></td>
+                    <td style="width: 47mm">Государственный номерной знак</td>
+                    <td class="bb01 tac"></td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td class="bottomText">(марка)</td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+        </div>
+
+        <table class="inLinTable" style="width: 140mm;">
+            <tr>
+                <td class="pr" style="width: 35mm">Сопровождающие лица:</td>
+                <td class="bb01"></td>
+            </tr>
+        </table>
+
+        <table class="codes">
+            <tr>
+                <td> </td>
+                <td class="bw bb01 tac" style="width: 15mm">Коды</td>
+            </tr>
+            <tr>
+                <td>Режим работы</td>
+                <td class="bw bb01"> </td>
+            </tr>
+            <tr>
+                <td>Колонна</td>
+                <td class="bw bb01 bt01"> </td>
+            </tr>
+            <tr>
+                <td>Бригада</td>
+                <td class="bw bb01 bt01"> </td>
+            </tr>
+            <tr>
+                <td style="color: #fff">-</td>
+                <td class="bw bb01 bt01"> </td>
+            </tr>
+
+            <tr>
+                <td>Гаражный номер</td>
+                <td class="bw bb01 bt01"> </td>
+            </tr>
+            <tr>
+                <td>Табельный номер</td>
+                <td class="bw bt01"> </td>
+            </tr>
+        </table>
+
+        <table class="codes2">
+            <tr>
+                <td>Гаражный номер</td>
+                <td class="bw bb01" style="width: 15mm; color: #fff;">-</td>
+            </tr>
+            <tr>
+                <td>Гаражный номер</td>
+                <td class="bw bt01"> </td>
+            </tr>
+        </table>
+
+    </div>
+    <!--Конец левой колонки-->
+    <!--Начало правой колонки-->
+    <div class="right">
+        <table class="pdftable">
+            <tr>
+                <td colspan="8">Р а б о т а &nbsp; в о д и т е л я &nbsp; и &nbsp; а в т о м о б и л я</td>
+            </tr>
+            <tr style="font-size: 7px;">
+                <td rowspan="2">операция</td>
+                <td colspan="4">время по графику</td>
+                <td rowspan="2">нулевой пробег, км</td>
+                <td rowspan="2">показания спидометра, км</td>
+                <td rowspan="2">время фактическое, число, месяц, ч. мин.</td>
+            </tr>
+            <tr style="font-size: 7px;">
+                <td>число</td>
+                <td>месяц</td>
+                <td>ч.</td>
+                <td>мин.</td>
+            </tr>
+            <tr style="font-size: 6px;">
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td style="font-size: 6px; width: 22mm">выезд из гаража</td>
+                <td>{____dStart___}</td>
+                <td>{____mStart___}</td>
+                <td>{____HStart___}</td>
+                <td>{____iStart___}</td>
+                <td>{______zeroRun}</td>
+                <td>{___speedStart}</td>
+                <td>{___dateTStart}</td>
+            </tr>
+            <tr>
+                <td style="font-size: 6px; width: 22mm">возвращение в гараж</td>
+                <td>{______dEnd___}</td>
+                <td>{______mEnd___}</td>
+                <td>{______HEnd___}</td>
+                <td>{______iEnd___}</td>
+                <td> </td>
+                <td>{_____speedEnd}</td>
+                <td>{_____dateTEnd}</td>
+            </tr>
+        </table>
+
+        <table class="fuelMovement">
+            <tr style="font-size: 10px;">
+                <td colspan="8">Д в и ж е н и е &nbsp; г о р ю ч е г о</td>
+                <td colspan="2" rowspan="2" style="font-size: 9px;">Время работы, ч. мин.</td>
+            </tr>
+            <tr style="font-size: 7px;">
+                <td colspan="2">горючее</td>
+                <td rowspan="2">выдано, л</td>
+                <td colspan="3">остаток при</td>
+                <td rowspan="2">сдано, л</td>
+                <td rowspan="2">коэффициент изменения нормы</td>
+            </tr>
+            <tr style="font-size: 7px;">
+                <td>марка</td>
+                <td>код марки</td>
+                <td colspan="2">выезде, л</td>
+                <td>возвраще- нии, л</td>
+                <td>спецоборудо- вания</td>
+                <td>двигателя</td>
+            </tr>
+            <tr style="font-size: 6px;">
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td colspan="2">12</td>
+                <td>13</td>
+                <td>14</td>
+                <td>15</td>
+                <td>16</td>
+                <td>17</td>
+            </tr>
+            <tr>
+                <td><strong>ДИ</strong></td>
+                <td></td>
+                <td><strong>{_____refueled}</strong></td>
+                <td colspan="2"><strong>{____fuelStart}</strong></td>
+                <td><strong>{______fuelEnd}</strong></td>
+                <td></td>
+                <td><strong>{_changeFactor}</strong></td>
+                <td><strong>{___engineTime}</strong></td>
+                <td><strong>{_SPEngineTime}</strong></td>
+            </tr>
+            <tr style="font-size: 9px;">
+                <td colspan="10">п о д п и с ь</td>
+            </tr>
+            <tr style="font-size: 6px;">
+                <td colspan="2">заправщика</td>
+                <td colspan="2">механика</td>
+                <td colspan="2">механика</td>
+                <td colspan="2">заправщика</td>
+                <td colspan="2">диспетчера</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <!--Конец правой колонки-->
+
+</div>
+<!--Конец второй линии-->
+
+<table class="driversTask" style="border-bottom: none; border-left: none; font-size: 8px;">
+    <tr>
+        <td colspan="8" style="font-size: 11px;">З А Д А Н И Е &nbsp; В О Д И Т Е Л Ю</td>
+    </tr>
+    <tr>
+        <td rowspan="2" style="width: 47mm">в чье распоряжение (наименование и адрес заказчика)</td>
+        <td rowspan="2" style="width: 20mm">время прибытия, ч. мин.</td>
+        <td colspan="2">адрес пункта</td>
+        <td rowspan="2" style="width: 55mm">наименование груза</td>
+        <td rowspan="2">количество ездок</td>
+        <td rowspan="2">расстояние, км</td>
+        <td rowspan="2">перевезти тонн</td>
+    </tr>
+    <tr>
+        <td style="width: 53mm">погрузки</td>
+        <td style="width: 53mm">разгрузки</td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td>19</td>
+        <td>20</td>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td>24</td>
+        <td>25</td>
+    </tr>
+    <!--Начало наполнения в цикле-->
+    {__driversTask}
+    <!--Конец наполнения в цикле-->
+    <tr>
+        <td colspan="5" style="border: none; text-align: right;">Итого</td>
+        <td>{____countTrip}</td>
+        <td>{_____distance}</td>
+        <td>{__totalWeight}</td>
+    </tr>
+</table>
+
+<div class="bottomLines">
+    <table>
+        <tr class="vat">
+            <td class="left">
+                <table>
+                    <tr>
+                        <td colspan="6">Водительское удостоверение проверил, задание выдал,</td>
+                    </tr>
+                    <tr>
+                        <td>выдать горючего</td>
+                        <td colspan="4" class="bb01"> </td>
+                        <td>литров</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15mm"><strong>Диспетчер</strong></td>
+                        <td class="bb01" style="width: 15mm">&nbsp;</td>
+                        <td colspan="3" class="tac bb01" style="font-size: 8px;">{___dispatcher}</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="bottomText">(подпись)</td>
+                        <td colspan="3" class="bottomText">(расшифровка подписи)</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Водитель по состоянию<br>здоровья к управлению</td>
+                    </tr>
+                    <tr>
+                        <td>допущен</td>
+                        <td class="bb01" colspan="2">&nbsp;</td>
+                        <td class="bb01">&nbsp;</td>
+                        <td class="bb01" colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="bottomText" colspan="2">(должность)</td>
+                        <td class="bottomText">(подпись)</td>
+                        <td class="bottomText" colspan="2">(расшифровка подписи)</td>
+                    </tr>
+                    <tr>
+                        <td>Место для<br>штампа</td>
+                        <td colspan="5"> </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="center">
+                <table>
+                    <tr>
+                        <td colspan="3">Автомобиль технически исправен.</td>
+                        <td colspan="2" class="bb01">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Выезд разрешен.</td>
+                        <td><strong>Механик</strong></td>
+                        <td class="bb01">&nbsp;</td>
+                        <td class="bb01 tac" style="font-size: 8px;">{_____mechanic}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                        <td class="bottomText">(подпись)</td>
+                        <td class="bottomText">(расшифровка подписи)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Автомобиль принял.</td>
+                        <td><strong>Водитель</strong></td>
+                        <td class="bb01">&nbsp;</td>
+                        <td class="bb01 tac" style="font-size: 8px;">{_______driver}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                        <td class="bottomText">(подпись)</td>
+                        <td class="bottomText">(расшифровка подписи)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">При возвращении автомобиль</td>
+                        <td class="bb01 tac">исправен</td>
+                        <td colspan="3"> </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                        <td class="tac">неисправен</td>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Сдал водитель</td>
+                        <td> </td>
+                        <td colspan="2" class="bb01"> </td>
+                        <td class="bb01 tac" style="font-size: 8px;">{_______driver}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2" class="bottomText">(подпись)</td>
+                        <td class="bottomText">(расшифровка подписи)</td>
+                    </tr>
+                    <tr>
+                        <td>Принял механик</td>
+                        <td> </td>
+                        <td colspan="2" class="bb01"> </td>
+                        <td class="bb01 tac" style="font-size: 8px;">{_____mechanic}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15mm">&nbsp;</td>
+                        <td style="width: 5mm">&nbsp;</td>
+                        <td colspan="2" class="bottomText">(подпись)</td>
+                        <td class="bottomText" style="width: 55mm">(расшифровка подписи)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="right">
+                <table>
+                    <tr>
+                        <td class="tac" style="width: 40mm">Отметки организации-владельца<br>автотранспорта:</td>
+                        <td class="bb01">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="bb01">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="bb01">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="bb01">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="bb01">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+<div class="page_break"></div> <!--Разрыв страницы-->
+
+
+<p class="tar" style="font-size: 11px">Оборотная сторона формы № 4-С</p>
+
+<table class="taskList" style="border: none; width: 280mm; font-size: 8px;">
+    <tr>
+        <td colspan="14" style="font-size: 10px;">П О С Л Е Д О В А Т Е Л Ь Н О С Т Ь &nbsp; В Ы П О Л Н Е Н И Я &nbsp; З А Д А Н И Я</td>
+        <td rowspan="3">Наименование грузоотправителя (грузополучателя)</td>
+        <td rowspan="3">Подпись и печать грузоотправителя (грузополучателя)</td>
+    </tr>
+    <tr>
+        <td rowspan="2">пункт погрузки, разгрузки и перецепки прицепов</td>
+        <td rowspan="2">номер ездки</td>
+        <td colspan="3">прибытие</td>
+        <td colspan="3">убытие</td>
+        <td colspan="3">номер прицепа</td>
+        <td colspan="3" rowspan="2">номера приложенных товарно-транспортных документов (ТТД)</td>
+
+    </tr>
+    <tr>
+        <td>число</td>
+        <td>ч.</td>
+        <td>мин.</td>
+        <td>число</td>
+        <td>ч.</td>
+        <td>мин.</td>
+        <td>прибывших</td>
+        <td>убывших</td>
+        <td>порожний пробег прицепа</td>
+    </tr>
+    <tr>
+        <td style="width: 43mm">26</td>
+        <td  style="width: 10mm">27</td>
+        <td style="width: 13mm">28</td>
+        <td style="width: 12mm">29</td>
+        <td style="width: 12mm">30</td>
+        <td style="width: 13mm">&nbsp;</td>
+        <td style="width: 10mm">31</td>
+        <td style="width: 12mm">32</td>
+        <td style="width: 13mm">33</td>
+        <td style="width: 13mm">34</td>
+        <td style="width: 13mm">35</td>
+        <td style="width: 17mm">36</td>
+        <td style="width: 17mm">37</td>
+        <td style="width: 17mm">38</td>
+        <td style="width: 23mm">39</td>
+        <td>40</td>
+    </tr>
+    <!--Начало наполнения в цикле-->
+    {_____taskList}
+    <!--Конец наполнения в цикле-->
+    <tr>
+        <td style="border: none; text-align: right;">Всего &nbsp; </td>
+        <td>{____countTrip}</td>
+        <td colspan="11" style="border: none; text-align: right;">ТТД в количестве &nbsp; </td>
+        <td> </td>
+        <td colspan="2" style="border: none;">
+            <table style="border: none">
+                <tr>
+                    <td class="bb01" style="border-top: none; border-left: none; border-right: none; width: 30mm">&nbsp;</td>
+                    <td style="border: none">шт.</td>
+                </tr>
+                <tr>
+                    <td class="bottomText" style="border: none">(прописью)</td>
+                    <td style="border: none">&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p style="margin-left: 85mm; font-size: 11px;"><strong>Трасировка</strong></p>
+
+<div class="blockPassAuto">
+    <table class="passAuto">
+        <tr>
+            <td>Сдал водитель </td>
+            <td class="bb01" style="width: 20mm"> &nbsp; </td>
+            <td class="bb01" style="font-size: 8px;">{_______driver}</td>
+            <td> Принял диспетчер </td>
+            <td class="bb01"> &nbsp; </td>
+            <td class="bb01" style="font-size: 8px;">{___dispatcher}</td>
+        </tr>
+        <tr>
+            <td> &nbsp; </td>
+            <td class="bottomText">(подпись)</td>
+            <td class="bottomText">(расшифровка подписи)</td>
+            <td> &nbsp; </td>
+            <td class="bottomText">(подпись)</td>
+            <td class="bottomText">(расшифровка подписи)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="tracing">
+    <div class="remark">
+        <table>
+            <tr>
+                <td class="tac" style="width: 30mm">Особые отметки:</td>
+                <td class="bb01">&nbsp;</td>
+            </tr>
+            <tr><td colspan="2" class="bb01">&nbsp;</td></tr>
+            <tr><td colspan="2" class="bb01">&nbsp;</td></tr>
+            <tr><td colspan="2" class="bb01">&nbsp;</td></tr>
+            <tr><td colspan="2" class="bb01">&nbsp;</td></tr>
+            <tr><td colspan="2" class="bb01">&nbsp;</td></tr>
+        </table>
+    </div>
+    <div class="stoppage">
+        <table class="borderTD">
+            <tr>
+                <td colspan="4">Простои на линии</td>
+                <td rowspan="3">Подпись ответст- венного лица</td>
+            </tr>
+            <tr>
+                <td colspan="2">причина</td>
+                <td colspan="2">дата (число, месяц), время, ч. мин.</td>
+            </tr>
+            <tr>
+                <td>наименование</td>
+                <td>код</td>
+                <td>начало</td>
+                <td>окончание</td>
+            </tr>
+            <tr>
+                <td>41</td>
+                <td>42</td>
+                <td>43</td>
+                <td>44</td>
+                <td>45</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{____pageBreak}
+<table class="worksResult borderTD">
+    <tr>
+        <td colspan="21" style="font-size: 10px;">Р Е З У Л Ь Т А Т Ы &nbsp; Р А Б О Т Ы &nbsp; А В Т О М О Б И Л Я &nbsp; И &nbsp; П Р И Ц Е П О В</td>
+    </tr>
+    <tr>
+        <td colspan="2">расход горючего, л</td>
+        <td colspan="7">время в наряде, ч. мин.</td>
+        <td colspan="2">количество</td>
+        <td colspan="4">пробег, км</td>
+        <td colspan="2">перевезено, т</td>
+        <td colspan="2">выполнено, ткм</td>
+        <td colspan="2">зарплата</td>
+    </tr>
+    <tr>
+        <td rowspan="4">по норме</td>
+        <td rowspan="4">факти- чески</td>
+        <td colspan="2">всего</td>
+        <td colspan="5">в том числе автомобиля</td>
+        <td rowspan="4">ездок</td>
+        <td rowspan="4">заездов</td>
+        <td colspan="2">общий</td>
+        <td colspan="2">в том числе с грузом</td>
+        <td rowspan="4">всего</td>
+        <td rowspan="4">в том числе на прице- пах</td>
+        <td rowspan="4">всего</td>
+        <td rowspan="4">в том числе на прице- пах</td>
+        <td>код</td>
+        <td>сумма, руб. коп.</td>
+    </tr>
+    <tr>
+        <td rowspan="3">автомо-биля</td>
+        <td rowspan="3">прицепа</td>
+        <td rowspan="3">в движении</td>
+        <td colspan="4">в простое</td>
+        <td rowspan="3">автомо- биля</td>
+        <td rowspan="3">прицепа</td>
+        <td rowspan="3">автомо- биля</td>
+        <td rowspan="3">прицепа</td>
+        <td>65</td>
+        <td>66</td>
+    </tr>
+    <tr>
+        <td rowspan="2">всего</td>
+        <td colspan="2">под погрузкой, разгрузкой</td>
+        <td rowspan="2">по техническим неисправностям</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>всего</td>
+        <td>сверхнормат.</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>46</td>
+        <td>47</td>
+        <td>48</td>
+        <td>49</td>
+        <td>50</td>
+        <td>51</td>
+        <td>52</td>
+        <td>53</td>
+        <td>54</td>
+        <td>55</td>
+        <td>56</td>
+        <td>57</td>
+        <td>58</td>
+        <td>59</td>
+        <td>60</td>
+        <td>61</td>
+        <td>62</td>
+        <td>63</td>
+        <td>64</td>
+        <td> </td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>{_consumptionN}</td>
+        <td>{_consumptionR}</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>{totalDistance}</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+    </tr>
+</table>
+
+<table class="endTable">
+    <tr>
+        <td>Коды марок</td>
+        <td>&nbsp;</td>
+        <td>Автомобиля</td>
+        <td>&nbsp;</td>
+        <td class="bw" style="width: 24mm">{_____markAuto}</td>
+        <td>Прицепов </td>
+        <td>&nbsp;</td>
+        <td class="bw" style="width: 15mm">&nbsp;</td>
+        <td class="bw" style="width: 20mm">&nbsp;</td>
+        <td class="bw" style="width: 15mm">&nbsp;</td>
+        <td>Автомобиль, дни в работе</td>
+        <td class="bw" style="width: 15mm">{_____daysWork}</td>
+        <td>Таксировщик</td>
+        <td class="bb01"> </td>
+        <td class="bb01"> </td>
+    </tr>
+    <tr>
+        <td colspan="13"> </td>
+        <td class="bottomText">(подпись)</td>
+        <td class="bottomText">(расшифровка подписи)</td>
+    </tr>
+</table>
+
+
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<script>
+    $(function() {
+        $('#yesterday').on('click', function (event) {
+            setYesterday()
+        });
+        $('#today').on('click', function (event) {
+            setToday()
+        });
+    });
+</script>
+
+<?php $this->headTitle($title); ?>
+
+<h2><?= $this->escapeHtml($title); ?></h2>
+
+<?php if ($message) : ?>
+    <p class="alert"><?= $message; ?></p>
+<?php endif; ?>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('transfer', [
+    'action' => $this->currentRoute()->getAction(),
+    'department' => $this->currentDepartment()->getId(),
+    'id' => $id ?? null
+]));
+$form->setAttribute('class', 'form-horizontal');
+if ($this->permissions['edit']) {
+    $form->prepare();
+}
+?>
+<?= $this->form()->openTag($form); ?>
+
+<br><br>
+<div class="form-group <?= $this->formElementErrors($form->get('date')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label">
+        <a href="#" id="yesterday">Вчера</a>&nbsp;/&nbsp;<a href="#" id="today">Сегодня</a>
+    </label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['edit']) {
+            $form->get('date')->setAttributes(['readonly' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($form->get('date')); ?>
+        <?php if ($this->formElementErrors($form->get('date'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($form->get('date')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="form-group <?= $this->formElementErrors($form->get('dest')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('dest')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['delete'] && $this->currentRoute()->getAction() === 'edit') {
+            $form->get('dest')->setAttributes(['disabled' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($form->get('dest')); ?>
+    </div>
+</div>
+<div class="form-group <?= $this->formElementErrors($form->get('metal')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('metal')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['delete'] && $this->currentRoute()->getAction() === 'edit') {
+            $form->get('metal')->setAttributes(['disabled' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($form->get('metal'));?>
+    </div>
+</div>
+
+<?php if ($this->currentDepartment()->isBlack() && ($this->permissions['delete'] || $this->currentRoute()->getAction() !== 'edit')) : ?>
+    <div class="form-group <?= $this->formElementErrors($form->get('nakl1')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('nakl1')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('nakl1')); ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if ($this->permissions['delete'] || $this->currentRoute()->getAction() === 'edit' || ! $this->currentDepartment()->isBlack()) : ?>
+<div class="form-group <?= $this->formElementErrors($form->get('weight')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('weight')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['delete'] && $this->currentRoute()->getAction() !== 'add') {
+            $form->get('weight')->setAttributes(['readonly' => 'true']);
+            if (! $form->get('weight')->getValue()) {
+                $form->get('weight')->setValue(0);
+            }
+        }
+        ?>
+        <?= $this->formElement($form->get('weight')); ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if ($this->currentDepartment()->isBlack() && $sourceIsBlack && ($this->permissions['delete'] || $this->currentRoute()->getAction() === 'edit')) : ?>
+    <div class="form-group <?= $this->formElementErrors($form->get('nakl2')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('nakl2')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('nakl2')); ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if ($this->permissions['delete'] || ($this->currentRoute()->getAction() === 'edit' && ! $sourceIsBlack)) : ?>
+<div class="form-group <?= $this->formElementErrors($form->get('actual')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('actual')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! ($this->permissions['edit'] && ((strtotime(date('Y-m-d')) - strtotime($form->get('date')->getValue())) < (60 * 60 * 24 * 30))) && ! ($this->currentRoute()->getAction() === 'edit' && ! $this->currentDepartment()->isBlack())) {
+            $form->get('actual')->setAttributes(['readonly' => 'true']);
+            if (! $form->get('weight')->getValue()) {
+                $form->get('actual')->setValue(0);
+            }
+        }
+        ?>
+        <?= $this->formElement($form->get('actual')); ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="form-group">
+    <div class="col-sm-3 "></div>
+    <div class="col-sm-4">
+        <?= $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+<?= $this->form()->closeTag(); ?>

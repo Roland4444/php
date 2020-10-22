@@ -1,0 +1,25 @@
+
+
+<?php if ($message) : ?>
+    <p class="alert"><?= $message; ?></p>
+<?php endif; ?>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url($this->params['route'], ['action' => $action,'department' => $this->params['currentDepartmentId'], 'id' => $id ?? null]));
+$form->setAttribute('class', 'form-horizontal');
+?>
+<?= $this->form()->openTag($form); ?>
+<div class="form-group <?= $this->formElementErrors($form->get('money')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('money')->getLabel() ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('money')); ?>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+        <?= $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+<?= $this->form()->closeTag(); ?>

@@ -1,0 +1,17 @@
+<?php $title = 'Добавить расход на метал' ?>
+
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<script>
+    $(document).ready(() => {
+        $('#customer').select2();
+    });
+
+    $(function () {
+        new allCustomers('<?= $this->url('customer', ['action' => 'list']) ?>');
+    });
+</script>
+
+<?php require "form.phtml"; ?>

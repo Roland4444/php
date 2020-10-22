@@ -1,0 +1,153 @@
+<h1>Приход металла</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $('#qr').on('focus', function () {
+            this.value = '';
+        });
+        $("[name='customer']").select2();
+    });
+</script>
+
+<?php
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->prepare();
+    $form->setAttribute('action', $this->url($this->indexRoute, ['department' => $dep]));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($this->permissions['add'] && $dep) : ?>
+    <a href="<?= $this->url($this->indexRoute, ['action' => 'add','department' => $dep]); ?>" class="btn btn-default">Добавить</a>
+<?php endif;?>
+
+<table class="mytable table-bordered main-table">
+    <thead>
+        <tr>
+            <th style="width:200px;">Контрагент</th>
+            <th style="width: 250px;">Металл</th>
+            <th class="num">Масса, кг</th>
+            <th class="num">Цена, руб</th>
+            <th class="num">Сумма, руб</th>
+            <th class="action"></th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    let showQR = id => {
+        window.open("<?= $this->url('purchase_deal', ['action' => 'check','department' => $dep]); ?>/" + id, "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=700,top="+200+",left="+200);
+    }
+</script>
+
+<?php foreach ($data['result'] as $item) :?>
+    <h3 style="text-align: left;">
+        <?= $this->dateFormat(DateTime::createFromFormat('Y-m-d', $item['date']), IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'ru_RU'); ?>
+    </h3>
+
+    <?php if ($item['deal'] !== null && ! empty($this->metalExpenseRoute)) : ?>
+        <?php if ($this->permissions['edit']) : ?>
+            <?php if ($this->permissions['delete'] || $item['date'] === date('Y-m-d')) :?>
+                <a href="<?= $this->url('purchase_deal', ['action' => 'edit','id' => $item['deal']->getId(),'department' => $dep]); ?>">
+                    <img src='/images/edit.png' alt='Редактировать'>
+                </a>
+            <?php endif;?>
+        <?php endif;?>
+        <?= $item['deal']->getComment() ?>
+
+        <a href="#" onclick="showQR(<?= $item['deal']->getId()?>)">Чек&nbsp;<?= $item['deal']->getId(); ?></a> |
+        <?php if ($this->permissions['deal']) : ?>
+            <a href="<?= $this->url($this->metalExpenseRoute, ['action' => 'deal', 'id' => $item['deal']->getId(),'department' => $dep]); ?>">
+                <?= $item['isPaid'] ? 'Оплачен' : 'Оплата' ?>
+            </a>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <table class="mytable table-bordered table-striped main-table" style="margin-top: 0;">
+        <tbody>
+            <?php foreach ($item['data'] as $row) :?>
+                <tr>
+                    <td style="width:200px;"><?= $row->getCustomer()->getName(); ?></td>
+                    <td style="width: 250px;"><?= $row->getMetal()->getName(); ?></td>
+                    <td class="num"><?= $this->numberFormat($row->getWeight()); ?>&nbsp;кг.</td>
+                    <td class="num">
+                        <?php if ($row->getFormal() > 0) :?>
+                            (<?= $this->currencyFormat($row->getFormal(), 'RUR', null, 'ru_RU'); ?>)
+                        <?php endif; ?>
+                        <?= $this->currencyFormat($row->getCost(), 'RUR'); ?>
+                    </td>
+                    <td class="num">
+                        <?php if ($row->getFormal() > 0) :?>
+                            (<?= $this->currencyFormat($row->getSumFormal(), 'RUR', null, 'ru_RU'); ?>)
+                        <?php endif; ?>
+                        <?= $this->currencyFormat($row->getSum(), 'RUR'); ?>
+                    </td>
+                    <td class="action">
+                        <?php if ($this->permissions['edit']) : ?>
+                            <?php if ($this->permissions['delete'] || $row->getDate() == date('Y-m-d')) :?>
+                                <a href="<?= $this->url($this->indexRoute, ['action' => 'edit','id' => $row->getId(),'department' => $dep]); ?>">
+                                    <img src='/images/edit.png' alt='Редактировать'>
+                                </a>
+                            <?php endif;?>
+                        <?php endif;?>
+                        <?php if ($this->permissions['delete']) :?>
+                            <a class="confirm" href="<?= $this->url($this->indexRoute, ['action' => 'delete','id' => $row->getId(),'department' => $dep]); ?>">
+                                <img src='/images/del.png' alt='Удалить'>
+                            </a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="total sum"><?= $this->numberFormat($item['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <td></td>
+                <td class="total sum"><?= $this->currencyFormat($item['sum'], 'RUR', null, 'ru_RU'); ?></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+<?php endforeach;?>
+
+<table class="mytable table-bordered main-table">
+    <thead>
+    <tr>
+        <th style="width:200px;"></th>
+        <th style="width:250px;"></th>
+        <th class="num"><?= $this->numberFormat($data['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</th>
+        <th class="num"></th>
+        <th class="num">
+            <?php if ($data['sumFormal'] > 0) :?>
+                (<?= $this->currencyFormat($data['sumFormal'], 'RUR', null, 'ru_RU'); ?>)
+            <?php endif; ?>
+            <?= $this->currencyFormat($data['sum'], 'RUR', null, 'ru_RU'); ?>
+        </th>
+        <th class="action"></th>
+    </tr>
+    </thead>
+</table>
+
+<table style="width:500px;" class="mytable table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Металл</th>
+        <th class="num">Масса, кг.</th>
+        <th class="num"h>Средняя цена, руб.</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data['total'] as $item) :?>
+        <tr>
+            <td><?= $item['metal']?></td>
+            <td class="num"><?= $this->numberFormat($item['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+            <td class="num"><?= $this->currencyFormat($item['price'], 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>

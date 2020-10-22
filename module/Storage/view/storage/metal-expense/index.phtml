@@ -1,0 +1,82 @@
+<h1>Расходы на металл</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $("[name='customer']").select2();
+    });
+</script>
+
+<?php
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->prepare();
+    $form->setAttribute('action', $this->url($this->params['route'], ['department' => $this->params['currentDepartmentId']]));
+?>
+<?= $this->form()->openTag($form); ?>
+    <?php foreach ($form as $element) : ?>
+        <?= $this->formElement($element); ?> &nbsp;
+    <?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url($this->params['route'], ['action' => 'add', 'department' => $this->params['currentDepartmentId']]); ?>"
+       class="btn btn-default">Добавить</a>
+<?php endif; ?>
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Контрагент</th>
+        <th>Чек</th>
+        <th>Сумма</th>
+        <th>Накладная</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php /** @var \Storage\Entity\MetalExpense $line */
+    foreach ($rows as $line) : ?>
+        <tr>
+            <td class="date"><?= $line->getDate(); ?></td>
+            <td><?= $line->getCustomer()->getName(); ?></td>
+            <td>
+                <?php if ($line->getDeal()) : ?>
+                    <?= $line->getDeal()->getId() ?>&nbsp;<?= $line->getDeal()->getComment(); ?></td>
+                <?php endif; ?>
+            <td class="num">
+                <?php if ($line->getFormal()) : ?>
+                    <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+                <?php endif; ?>
+
+                <?php if ($line->getDiamond()) : ?>
+                    <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+                <?php endif; ?>
+                <?= $this->currencyFormat($line->getMoney(), 'RUR'); ?></td>
+            <td class="num">
+                <?php if ($line->getWeighing()) : ?>
+                    <?=  $line->getWeighing()->getWaybill() ?> <?=  $line->getWeighing()->getComment() ?>
+                <?php endif; ?>
+            </td>
+            </td>
+            <td class="action">
+                <?php if ($this->permissions['delete']) : ?>
+                    <a href="<?= $this->url($this->params['route'], ['action' => 'edit', 'id' => $line->getId(), 'department' => $this->params['currentDepartmentId']]); ?>">
+                        <img src='/images/edit.png' alt='Редактировать'></a>
+                    <a class="confirm"
+                       href="<?= $this->url($this->params['route'], ['action' => 'delete', 'id' => $line->getId(), 'department' => $this->params['currentDepartmentId']]); ?>">
+                        <img src='/images/del.png' alt='Удалить'></a>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="total num"><?= $this->currencyFormat($sum, 'RUR'); ?></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,15 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<?php $this->initScript('storage/purchase'); ?>
+
+<div id="app">
+    <storage-purchase-add
+        :permissions='<?= json_encode($permissions) ?>'
+        api-url="<?=$this->url('purchase', ['department' => $departmentId]) ?>"
+        :department-id="<?= $departmentId ?>"
+        :metals='<?= json_encode($metals) ?>'
+        customers-url="<?= $this->url('customer') ?>"
+    />
+</div>

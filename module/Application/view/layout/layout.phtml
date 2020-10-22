@@ -1,0 +1,91 @@
+<?= $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= $this->headTitle(' AVS Base') ?>
+
+    <?= $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+
+    <!-- Le styles -->
+
+    <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon.ico']) ?>
+
+    <!-- Scripts -->
+    <?= $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', ['conditional' => 'lt IE 9',])?>
+    <script>
+        const gurl = '<?= $this->url()?>';
+    </script>
+    <script src="/js/bundle.js"></script>
+</head>
+<body>
+<div class="wrapper notPadding">
+    <div class="container-fluid  notPadding">
+        <div class="row main">
+
+            <div class="link-stack">
+                <a id="getMenu" class="nav-toggle">
+                    <span id="getMenuText"> </span>
+                </a>
+            </div>
+
+            <div id="substrate"></div>
+
+            <aside class="col-xs-6 col-md-3" id="mainBlockMenu">
+                <?= $this->viewHelper()->showMenu()?>
+            </aside>
+
+            <script>
+                var noShowMenu = true;
+                getMenu.onclick = function () {
+                    noShowMenu = ! noShowMenu;
+                    revertShow(true);
+                };
+                substrate.onclick = function () {
+                    revertShow(false);
+                    noShowMenu = true;
+                };
+
+                function revertShow(isClosed){
+                    if (noShowMenu || ! isClosed){
+                        mainBlockMenu.style.display =  '';
+                        mainBlockMenu.style.position =  '';
+                        mainBlockMenu.style.minWidth =  '';
+                        mainBlockMenu.style.maxWidth =  '';
+                        getMenuText.setAttribute('class','glyphicon glyphicon-th-list');
+                        substrate.style.display = 'none';
+                    } else {
+                        mainBlockMenu.style.display =  'block';
+                        mainBlockMenu.style.position =  'absolute';
+                        mainBlockMenu.style.zIndex =  '10';
+                        mainBlockMenu.style.minWidth =  '411px';
+                        mainBlockMenu.style.maxWidth =  '100%';
+                        getMenuText.setAttribute('class','glyphicon glyphicon-th');
+                        substrate.style.display = 'block';
+
+                    }
+                }
+
+                function windowSize(){
+                    if ($(window).width() <= '1400'){
+                        revertShow(! noShowMenu);
+                    } else {
+                        revertShow(false);
+                    }
+                }
+                $(window).load(windowSize); // при загрузке
+                $(window).resize(windowSize); // при изменении размеров
+
+            </script>
+
+            <div id="contentBlock" style="padding-right:0;" class="col-xs-12 col-md-9">
+                <section>
+                    <?= $this->content;?>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

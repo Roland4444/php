@@ -1,0 +1,93 @@
+<?php
+return [
+	'doctrine' => [
+		'connection' => [
+			'orm_default' => [
+				'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+				'params' => [
+					'host' => 'localhost',
+					'port' => '3306',
+					'user' => 'root',
+					'password' => 'root',
+					'dbname' => 'avs',
+                    'charset'  => 'utf8',
+                    'driverOptions' => [
+                        1002 => 'SET NAMES utf8'
+                    ],
+                ],
+            ],
+        ],
+        'configuration' => [
+            'orm_default' => [
+                'sql_logger' => 'my_sql_logger',
+                'string_functions' => [
+                    'JSON_EXTRACT' => 'Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract',
+                    'JSON_CONTAINS' => 'Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains'
+                ],
+                'metadata_cache'     => 'filesystem',
+                'query_cache'        => 'filesystem',
+                'result_cache'       => 'filesystem',
+            ]
+        ],
+    ],
+    'rabbitmq_module' => [
+        'connection' => [
+            // connection name
+            'default' => [ // default values
+                'type' => 'stream', // Available: stream, socket, ssl, lazy
+                'host' => 'localhost',
+                'port' => 5672,
+                'username' => 'guest',
+                'password' => 'guest',
+                'vhost' => '/',
+                'insist' => false,
+                'read_write_timeout' => 2,
+                'keep_alive' => false,
+                'connection_timeout' => 3,
+                'heartbeat' => 0
+            ]
+        ],
+        'consumer' => [
+            'diamond_commission' => [
+                'description' => 'diamondCommission',
+                'connection' => 'default', // the connection name
+                'exchange' => [
+                    'type' => 'direct',
+                    'name' => 'exchange-name'
+                ],
+                'queue' => [
+                    'name' => 'diamondCommission', // can be an empty string,
+                    'routing_keys' => [
+                        // optional routing keys
+                    ]
+                ],
+                'auto_setup_fabric_enabled' => true, // auto-setup exchanges and queues
+                'qos' => [
+                    // optional QOS options for RabbitMQ
+                    'prefetch_size' => 0,
+                    'prefetch_count' => 1,
+                    'global' => false
+                ],
+                'callback' => 'diamondCommissionJob',
+            ]
+        ]
+    ],
+    'translator' => [
+        'locale' => ['ru'],
+        'translation_file_patterns' => [
+            [
+                'type'     => 'gettext',
+                'base_dir' => getcwd() .  '/data/language',
+                'pattern'  => '%s.mo',
+            ],
+        ],
+    ],
+    'uploads_url' => 'http://uploads.avs.lh',
+    'uploads_dir' => __DIR__ . '/../../data/uploads/',
+    'weighing_dir' => __DIR__ . '/../../data/weighings/',
+    'services' => [
+        'shipment_docs' => [
+            'url' => 'shipmentdocs.localhost/'
+        ]
+    ]
+];

@@ -1,0 +1,77 @@
+
+<?php if ($message) : ?>
+    <p class="alert"><?= $message; ?></p>
+<?php endif; ?>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url($this->params['route'], [
+    'action' => $this->currentRoute()->getAction(),
+    'department' => $this->params['currentDepartmentId'],
+    'id' => $id ?? null
+]));
+$form->setAttribute('class', 'form-horizontal');
+if ($this->permissions['delete']) {
+    $form->prepare();
+}
+?>
+<?= $this->form()->openTag($form); ?>
+
+<div class="form-group <?= $this->formElementErrors($form->get('date')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('date')->getLabel() ?></label>
+    <div class="col-sm-4">
+        <?php
+        if (! $this->permissions['delete']) {
+            $form->get('date')->setAttributes(['readonly' => 'true']);
+        }
+        ?>
+        <?= $this->formElement($form->get('date')); ?>
+        <?php if ($this->formElementErrors($form->get('date'))) : ?>
+            <span class="help-inline"><?= $this->formElementErrors($form->get('date')); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="form-group <?=  $this->formElementErrors($form->get('customer')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('customer')->getLabel(); ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('customer')); ?>
+    </div>
+    <div id="all_customers" class="btn btn-default">все поставщики</div>
+</div>
+
+<div class="form-group <?= $this->formElementErrors($form->get('money')) ? 'error' : '' ?>">
+    <label class="col-sm-3 control-label"><?= $form->get('money')->getLabel() ?></label>
+    <div class="col-sm-4">
+        <?= $this->formElement($form->get('money')); ?>
+    </div>
+</div>
+
+<div class="form-group <?=  $this->formElementErrors($form->get('diamond')) ? 'error' : '' ?>">
+    <div class="col-sm-3 control-label">&nbsp;</div>
+    <div class="checkbox col-sm-4">
+        <label>
+            <?= $this->formElement($form->get('diamond')); ?>
+            <?= $form->get('diamond')->getLabel(); ?>
+        </label>
+    </div>
+</div>
+
+<?php if ($this->permissions['delete']) : ?>
+    <div class="form-group <?= $this->formElementErrors($form->get('formal')) ? 'error' : '' ?>">
+        <div class="col-sm-3 control-label">&nbsp;</div>
+        <div class="checkbox col-sm-4">
+            <label>
+                <?= $this->formElement($form->get('formal')); ?>
+                <?= $form->get('formal')->getLabel(); ?>
+            </label>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="form-group">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+        <?= $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+<?= $this->form()->closeTag(); ?>

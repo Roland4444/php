@@ -1,0 +1,16 @@
+<h1>Безналичная оплата</h1>
+<?php $this->initScript('spare/payment'); ?>
+<div id="app">
+    <spare-payment-form-panel
+            :save-bind-url="'<?=$saveBindUrl?>'"
+            :remove-bind-url="'<?=$removeBindUrl?>'"
+            :get-expenses-uri="'<?=$getExpensesUri?>'"
+            :order-url="'<?=$orderUrl?>'"
+            :search-data='<?=$searchData?>'
+            :sellers='<?=$sellers?>'
+            :expenses-list='<?=$expensesList?>'
+            :orders-list='<?=$orders?>'
+
+    ></spare-payment-form-panel>
+</div>
+

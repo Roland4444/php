@@ -1,0 +1,57 @@
+<?php
+$title = 'Добавить отгрузку';
+$this->headTitle($title)
+?>
+
+<h1><?= $title; ?></h1>
+
+<script>
+    <?php include "add.js"?>
+    init(<?= (int)$isFerrous; ?>, '<?= $this->url($route, ['department' => $dep]); ?>');
+    setShipmentId(<?= $shipment_id; ?>);
+    setContainerId(<?= $container_id; ?>);
+    setContainerUrl('<?= $this->url('storage_container', ['department' => $dep]); ?>');
+    setContainerItemUrl('<?= $this->url('storage_container_item', ['department' => $dep]); ?>');
+</script>
+
+
+
+<div class="ui-widget">
+    <p id="c_header"></p>
+    <table id="c_items" class="table ui-widget ui-widget-content">
+        <thead>
+        <tr class="ui-widget-header ">
+            <?php if ($isFerrous) : ?>
+                <th>Вагон</th>
+            <?php endif; ?>
+            <th>Металл</th>
+            <th>Отправлено</th>
+            <th>Принято</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Отгрузка</a></li>
+        <?php if ($isFerrous) : ?>
+            <li><a href="#tabs-2">Вагон</a></li>
+        <?php else : ?>
+            <li><a href="#tabs-2">Контейнер</a></li>
+            <li><a href="#tabs-3">Металл</a></li>
+        <?php endif; ?>
+    </ul>
+
+    <div id="tabs-1"></div>
+    <div id="tabs-2">
+        <div id="tabs-2-container"></div>
+        <div id="tabs-2-item"></div>
+    </div>
+
+    <?php if (! $isFerrous) : ?>
+        <div id="tabs-3"></div>
+    <?php endif; ?>
+</div>

@@ -1,0 +1,42 @@
+<h1>Справочник пользователей</h1>
+
+<p><a class="btn btn-success" href="<?= $this->url('user/add')?>">Добавить</a></p>
+
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Логин</th>
+        <th>Роль</th>
+        <th>Подразделение</th>
+        <th>Заблокирован</th>
+        <th>Вход из интернета</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($rows as $line) :?>
+        <tr>
+            <td class="col-md-2"><?= $line->getName(); ?></td>
+            <td class="col-md-2"><?= $line->getLogin(); ?></td>
+            <td class="col-md-2"><?= json_encode($line->getRoleNames()); ?></td>
+            <td class="col-md-2"><?= $line->getDepartment() ? $line->getDepartment()->getName() : 'Все'; ?></td>
+
+            <td class="col-md-1 text-center">
+                <span class="glyphicon <?= $line->getIsBlocked() ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger'?>" aria-hidden="true"></span>
+            </td>
+            <td class="col-md-2 text-center">
+                <span class="glyphicon <?= $line->getLoginFromInternet() ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger'?>" aria-hidden="true"></span>
+            </td>
+            <td class="col-md-1 text-center">
+                <a href="<?= $this->url('user/edit', ['id' => $line->getId()]); ?>">
+                    <img src='/images/edit.png' alt='Редактировать'>
+                </a>
+                <a class="confirm" href="<?= $this->url('user/delete', ['id' => $line->getId()]); ?>">
+                    <img src='/images/del.png' alt='Удалить'>
+                </a>
+            </td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>

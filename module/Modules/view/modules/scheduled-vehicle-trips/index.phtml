@@ -1,0 +1,83 @@
+<h1>Запланированные передвижения техники</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+<div class="filter">
+    <?php
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->setAttribute('action', $this->url('scheduledVehicleTrips'));
+    ?>
+
+    <?= $this->form()->openTag($form); ?>
+
+    <div class="items">
+        <span><?= $this->formElement($form->get('startdate')); ?></span>
+        <span><?= $this->formElement($form->get('enddate')); ?></span>
+        <span><?= $this->formElement($form->get('customerText')); ?></span>
+        <span><?= $this->formElement($form->get('vehicle')); ?></span>
+        <span><?= $this->formElement($form->get('department')); ?></span>
+        <span><?= $this->formElement($form->get('submit')); ?></span>
+    </div>
+    <?= $this->form()->closeTag() ?>
+</div>
+
+<?php if ($permissions['add']) : ?>
+    <a href="<?= $this->url('scheduledVehicleTrips', ['action' => 'add']) ?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Клиент</th>
+        <th>Техника</th>
+        <th>Оплата</th>
+        <th>Подразделение</th>
+        <th>Комментарий</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $total = 0; ?>
+    <?php foreach ($data as $line) : ?>
+        <tr>
+            <td class="date"><?= $line->getDate(); ?></td>
+            <td><?= $line->getCustomer(); ?></td>
+            <td><?= $line->getVehicle()->getName(); ?></td>
+            <td class="num"><?= $this->currencyFormat($line->getPayment(), 'RUR'); ?></td>
+            <td><?= $line->getDepartment()->getName(); ?></td>
+            <td><?= $line->getComment(); ?></td>
+            <td>
+                <?php if (($permissions['delete'] || $this->isNormalLimitMonth($line->getDate(), 2)) && $permissions['edit']) : ?>
+                    <a href="<?= $this->url('scheduledVehicleTrips', ['action' => 'edit', 'id' => $line->getId()]) ?>">
+                        <img src='/images/edit.png' alt='Редактировать'>
+                    </a>
+                <?php endif; ?>
+                <?php if ($permissions['delete']) : ?>
+                    <a class="confirm"
+                       href="<?= $this->url('scheduledVehicleTrips', ['action' => 'delete', 'id' => $line->getId()]); ?>"><img
+                                src='/images/del.png' alt='Удалить'></a>
+                <?php endif; ?>
+                <?php if (($permissions['delete'] || $this->isNormalLimitMonth($line->getDate(), 2)) && $permissions['complete']) : ?>
+                    <a href="<?= $this->url('scheduledVehicleTrips', ['action' => 'complete', 'id' => $line->getId()]); ?>"
+                       onclick="return confirm('Подтвердите действие?') ? true : false;">Завершить</a>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php $total += $line->getPayment() ?>
+    <?php endforeach; ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="total num"><?= $this->currencyFormat($total, 'RUR'); ?></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

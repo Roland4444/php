@@ -1,0 +1,106 @@
+<h1>Переброска</h1>
+
+<script>
+    $(document).ready(function () {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+<div class="filter">
+    <?php
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->setAttribute('action', $this->url('transfer', ['department' => $this->params['currentDepartmentId']]));
+    ?>
+    <?= $this->form()->openTag($form); ?>
+    <?php foreach ($form as $element) : ?>
+        <?= $this->formElement($element); ?> &nbsp;
+    <?php endforeach; ?>
+</div>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($this->permissions['add']) : ?>
+    <a href="<?= $this->url('transfer', ['action' => 'add', 'department' => $this->params['currentDepartmentId']]); ?>"
+       class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Отправитель</th>
+        <th>Получатель</th>
+        <th>Металл</th>
+        <th>Отправленно, кг.</th>
+        <th>Принято, кг.</th>
+        <?php if ($this->permissions['delete'] || $this->permissions['edit']) : ?>
+            <th></th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data['items'] as $line) : ?>
+        <tr>
+            <td class="date"><?= $line['date']; ?></td>
+            <td><?= $line['source']; ?></td>
+            <td><?= $line['destination']; ?></td>
+            <td><?= $line['metal']; ?></td>
+            <td class="num"><?= $line['sent'] ?></td>
+            <td class="num"><?= $line['received']; ?></td>
+            <?php if ($this->permissions['delete'] || $this->permissions['edit']) : ?>
+                <td class="action">
+                    <?php if ($this->permissions['edit']) : ?>
+                        <a href="<?= $this->url('transfer', [
+                            'action' => 'edit',
+                            'id' => $line['id'],
+                            'department' => $this->params['currentDepartmentId']
+                        ]); ?>"><img src='/images/edit.png' alt='Редактировать'></a>
+                    <?php endif; ?>
+                    <?php if ($this->permissions['delete']) : ?>
+                        <a class="confirm" href="<?= $this->url('transfer', [
+                            'action' => 'delete',
+                            'id' => $line['id'],
+                            'department' => $this->params['currentDepartmentId']
+                        ]); ?>"><img src='/images/del.png' alt='Удалить'></a>
+                    <?php endif; ?>
+                </td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="total num"><?= $data['sent'] ?></td>
+        <td class="total num"><?= $data['received'] ?></td>
+        <?php if ($this->permissions['delete'] || $this->permissions['edit']) : ?>
+            <td></td>
+        <?php endif; ?>
+    </tr>
+    </tbody>
+</table>
+
+<?php if ($permissions['showAvgSor']) : ?>
+    <p>Средний засор: <?= $data['avgSor'] ?></p>
+<?php endif; ?>
+
+<table class="table table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Металл</th>
+        <th>Масса</th>
+        <th>Фактическая масса</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data['total'] as $item) : ?>
+        <tr>
+            <td><?= $item['title']; ?></td>
+            <td class="num"><?= $item['sent']; ?></td>
+            <td class="num"><?= $item['received']; ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

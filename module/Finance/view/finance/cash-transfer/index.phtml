@@ -1,0 +1,11 @@
+<h1>Перевод со счета на счет</h1>
+
+<?php $this->initScript('finance/cash-transfer'); ?>
+
+<div id="app">
+  <finance-cash-transfer
+      :permissions='<?= json_encode($permissions) ?>'
+      :banks='<?= json_encode($bankAccounts) ?>'
+      api-url="<?=$this->url($apiUrl) ?>"
+  />
+</div>

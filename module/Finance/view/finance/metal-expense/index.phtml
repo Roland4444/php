@@ -1,0 +1,7 @@
+<h1>Расходы на металл</h1>
+
+<?php $this->initScript('finance/metal-expenses') ?>
+
+<div id="app">
+    <metal-expenses api-url="<?=$this->url('main_metal_expenses') ?>" :permissions='<?=$permissions ?>'></metal-expenses>
+</div>

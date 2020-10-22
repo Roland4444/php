@@ -1,0 +1,72 @@
+<h1>Путевые листы</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('waybills'));
+?>
+<?= $this->form()->openTag($form) ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<?php if ($permissions['add']) : ?>
+    <a href="<?= $this->url('waybills', ['action' => 'add']) ?>" class="btn btn-default">Добавить</a>
+    <a href="<?= $this->url('waybillSettings') ?>" class="btn btn-default">Настройки</a>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Номер</th>
+        <th>Машина</th>
+        <th>Водитель</th>
+        <th>Дата выезда</th>
+        <th>Дата заезда</th>
+        <th class="notPrint"> </th>
+        <?php if ($permissions['edit'] || $permissions['delete']) : ?>
+            <th class="notPrint"> </th>
+        <?php endif; ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($data as $line) : ?>
+        <tr>
+            <td style="text-align: center"><?= $line->getWaybillNumber(); ?></td>
+            <td><?= $line->getVehicle()->getName(); ?></td>
+            <td><?= $line->getDriver()->getName(); ?></td>
+            <td><?= $line->getDateStart(); ?></td>
+            <td><?= $line->getDateEnd(); ?></td>
+            <td class="action notPrint">
+                <a target="_blank" href="<?= $this->url('waybills', ['action' => 'create', 'id' => $line->getId()]); ?>">
+                    <img src='/images/save.png' alt='Получить путевой лист'>
+                </a>
+            </td>
+
+            <?php if ($permissions['edit'] || $permissions['delete']) : ?>
+                <td class="action notPrint">
+                    <?php if ($permissions['edit']) : ?>
+                        <a href="<?= $this->url('waybills', ['action' => 'edit', 'id' => $line->getId()]); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'>
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($permissions['delete']) : ?>
+                        <a class="confirm"
+                           href="<?= $this->url('waybills', ['action' => 'delete', 'id' => $line->getId()]); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

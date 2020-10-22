@@ -1,0 +1,31 @@
+<div style="margin-left: 30px;">
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url($route, ['action' => 'edit', 'department' => $dep, 'id' => $id]));
+    $form->setAttribute('id', 'editItemForm');
+    $form->prepare();
+    ?>
+    <?= $this->form()->openTag($form); ?>
+
+    <?php foreach ($form as $element) : ?>
+        <div class="control-group <?= $this->formElementErrors($element) ? 'error' : '' ?>">
+            <?php if ($element instanceof Zend\Form\Element\Checkbox) : ?>
+                <div class="checkbox">
+                    <label>
+                        <?= $this->formElement($element); ?>
+                        <?= $element->getLabel(); ?>
+                    </label>
+                </div>
+            <?php else : ?>
+                <label class="control-label"><?= $element->getLabel(); ?></label>
+                <div class="controls">
+                    <?= $this->formElement($element); ?>
+                    <?php if ($this->formElementErrors($element)) : ?>
+                        <span class="help-inline"><?= $this->formElementErrors($element); ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+    <?= $this->form()->closeTag(); ?>
+</div>

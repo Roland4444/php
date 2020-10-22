@@ -1,0 +1,9 @@
+<?php $this->headTitle('Редактирование выезда техники'); ?>
+
+<h1><?= $this->escapeHtml('Редактирование выезда техники');?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('completedVehicleTrips', ['action' => 'edit','id' => isset($id) ? $id : null]));
+echo $this->partial('modules/scheduled-vehicle-trips/form.phtml');
+?>

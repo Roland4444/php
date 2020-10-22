@@ -1,0 +1,46 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('storageCashTransfer', ['action' => $action,'id' => $id,'department' => $dep]));
+$form->setAttribute('class', 'form-horizontal');
+if ($this->hasAccess(Storage\Controller\CashTransferController::class, 'delete')) {
+    $form->prepare();
+}
+?>
+<?= $this->form()->openTag($form); ?>
+    <div class="form-group <?= $this->formElementErrors($form->get('date')) ? 'has-error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('date')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?php
+            if (! $this->hasAccess(Storage\Controller\CashTransferController::class, 'delete')) {
+                $form->get('date')->setAttributes(['readonly' => 'true']);
+            }
+            ?>
+            <?= $this->formElement($form->get('date')); ?>
+            <?php if ($this->formElementErrors($form->get('date'))) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($form->get('date')); ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="form-group <?= $this->formElementErrors($form->get('dest')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('dest')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('dest')); ?>
+        </div>
+    </div>
+    <div class="form-group <?= $this->formElementErrors($form->get('money')) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $form->get('money')->getLabel(); ?></label>
+        <div class="col-sm-4">
+            <?= $this->formElement($form->get('money')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-4">
+            <?= $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
+<?= $this->form()->closeTag(); ?>

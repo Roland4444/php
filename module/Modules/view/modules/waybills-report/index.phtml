@@ -1,0 +1,73 @@
+<h1 class="notPrint">Отчет</h1>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('waybillsReport'));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?>
+<?php endforeach;?>
+<?= $this->form()->closeTag(); ?>&nbsp;
+
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        <th>Транспорт</th>
+        <th>Дата</th>
+        <th>На начало</th>
+        <th>На конец</th>
+        <th>Пробег</th>
+        <th>Бак на начало, л</th>
+        <th>Бак на конец, л</th>
+        <th>Приход, л</th>
+        <th>Расход, л</th>
+        <th>Норма, л</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $totalSpeedometer = $totalRefueled = $totalConsumptionReal = 0; ?>
+    <?php foreach ($waybills as $line) : ?>
+        <?php
+        $speedometer = $line->getSpeedometerEnd() - $line->getSpeedometerStart();
+        $totalSpeedometer += $speedometer;
+        $totalRefueled += $line->getRefueled();
+        $ConsumptionReal = $line->getConsumptionReal();
+        $totalConsumptionReal += $ConsumptionReal;
+        ?>
+
+        <tr>
+            <td><?= $line->getDriver()->getName() ?></td>
+            <td><?= $line->getVehicle()->getName() ?></td>
+            <td><?= $line->getDateStart('d.m.Y') ?></td>
+            <td><?= $line->getSpeedometerStart() ?></td>
+            <td><?= $line->getSpeedometerEnd() ?></td>
+            <td><?= $speedometer; ?></td>
+            <td><?= $line->getFuelStart(); ?></td>
+            <td><?= $line->getFuelEnd(); ?></td>
+            <td><?= $line->getRefueled(); ?></td>
+            <td><?= $ConsumptionReal; ?></td>
+            <td><?= $line->getConsumptionNormal(); ?></td>
+
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td colspan="5" style="text-align: right;">Итого: </td>
+        <td><?= $totalSpeedometer ?></td>
+        <td> </td>
+        <td> </td>
+        <td><?= $totalRefueled ?></td>
+        <td><?= $totalConsumptionReal ?></td>
+        <td> </td>
+    </tr>
+    </tbody>
+</table>

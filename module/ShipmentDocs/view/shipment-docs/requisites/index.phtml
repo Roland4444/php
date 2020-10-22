@@ -1,0 +1,146 @@
+<h1>Реквизиты компании</h1>
+
+<?php if (! empty($errors)) : ?>
+    <ul>
+        <?php foreach ($errors as $error) : ?>
+            <li class="validation-error-message"><?= $error ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+<?php if (! empty($data)) : ?>
+    <form action="<?= $this->url('shipmentDocs/requisites', ['action' => 'update']); ?>" class="form-horizontal form-add" method="post">
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="name">Наименование</label>
+            </div>
+            <div class="col-md-10 mb-10">
+                <input type="text" id="name" name="name" class="form-control" value="<?= htmlentities($data['name']) ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="full_name">Полное наименование:</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="full_name" name="full_name" class="form-control" value="<?= htmlentities($data['full_name']) ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="inn">ИНН</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="inn" name="inn" class="form-control" value="<?= $data['inn'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="kpp">КПП</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" max="9" id="kpp" name="kpp" class="form-control" value="<?= $data['kpp'] ?>">
+            </div>
+        </div>
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="ogrn">ОГРН</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" max="13" id="ogrn" name="ogrn" class="form-control" value="<?= $data['ogrn'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="address">Адрес</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="address" name="address" class="form-control" value="<?= $data['address'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="phone">Телефон</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="phone" name="phone" class="form-control" value="<?= $data['phone'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="account">Счет</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="account" name="account" class="form-control" value="<?= $data['account'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="director">Директор</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="director" name="director" class="form-control" value="<?= $data['director'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="chief_accountant">Главный бухгалтер</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="chief_accountant" name="chief_accountant" class="form-control" value="<?= $data['chief_accountant'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="inspector">Контролер лома</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="inspector" name="inspector" class="form-control" value="<?= $data['inspector'] ?>">
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col-md-2 mb-2">
+                <label for="loading_address">Адрес погрузки</label>
+            </div>
+
+            <div class="col-md-10 mb-10">
+                <input type="text" id="loading_address" name="loading_address" class="form-control" value="<?= $data['loading_address'] ?>">
+            </div>
+        </div>
+
+        <input type="hidden" id="id" name="id" class="form-control" value="<?= $data['id'] ?>">
+
+        <button class="btn btn-default" type="submit">Сохранить</button>
+    </form>
+<?php endif; ?>
+
+<style>
+    .inputs {
+        margin-bottom: 20px;
+    }
+
+    .validation-error-message {
+        color: #ff0000;
+        font-size: 10pt
+    }
+</style>

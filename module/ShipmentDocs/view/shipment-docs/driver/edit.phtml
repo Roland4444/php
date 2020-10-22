@@ -1,0 +1,17 @@
+<?php $this->headTitle('Редактировать водителя'); ?>
+
+<h1>Добавить водителя</h1>
+
+<?php $this->initScript('shipmentdoc/driver'); ?>
+
+<?php if (! empty($this->error)) : ?>
+    <p class="validation-error-message"><?= $this->error ?></p>
+<?php endif; ?>
+
+<div id="app">
+    <driver-form
+        :driver='<?= $this->entity ?>'
+        :save-driver-url="'<?= $this->url('shipmentDocs/driver', ['action' => 'save']) ?>'"
+        :back-url="'<?= $this->url('shipmentDocs/driver', ['action' => 'index']) ?>'"
+    ></driver-form>
+</div>

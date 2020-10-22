@@ -1,0 +1,170 @@
+<?php $this->headTitle('Отчеты :: Прибыль')?>
+<h1>Отчеты :: Прибыль</h1>
+<script>
+    $(document).ready(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $('.collapse').collapse('hide');
+    });
+</script>
+<script>
+    $(function() {
+        $(".hidetable").closest('table').find('tbody').toggle();
+    });
+    $(document).on('click','thead',function(){
+        $(this).closest('table').find('tbody').toggle();
+    });
+</script>
+
+
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('reportProfit'));
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element); ?> &nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<h4>Прибыль</h4>
+<table class="table table-striped table-bordered main-table">
+    <tbody>
+        <tr>
+            <td>Прочие поступления</td>
+            <td class="num"><?= $this->currencyFormat($receipts, 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+        <tr>
+            <td>Выезды техники</td>
+            <td class="num"><?= $this->currencyFormat($moves, 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+        <tr>
+            <td>Грязная прибыль</td>
+            <td class="num"><?= $this->currencyFormat($profit, 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+        <tr>
+            <td>Чистая прибыль</td>
+            <td class="num"><?= $this->currencyFormat($net_profit, 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Средняя цена</h4>
+<?php if ($total) :?>
+    <table class="table table-striped table-bordered main-table">
+        <tbody>
+        <?php foreach ($total as $item) :?>
+            <tr>
+                <td><?= $item['group']; ?></td>
+                <td class="num"><?= $this->currencyFormat($item['pur_price'], 'RUR', null, 'ru_RU'); ?></td>
+                <td class="num"><?= $this->currencyFormat($item['ship_price'], 'RUR', null, 'ru_RU'); ?></td>
+                <td class="num"><?= $this->numberFormat($item['weight'], NumberFormatter::DECIMAL, NumberFormatter::TYPE_DEFAULT, "ru_RU"); ?>&nbsp;кг.</td>
+                <td class="num"><?= $this->currencyFormat($item['dif'], 'RUR', null, 'ru_RU'); ?></td>
+                <td class="num"><?= $this->currencyFormat($item['profit'], 'RUR', null, 'ru_RU'); ?></td>
+            </tr>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+<?php endif;?>
+
+
+<?php if ($main_expense) :?>
+    <h4>Расходы администратора</h4>
+    <div class="panel-group" id="accordion">
+        <?php foreach ($main_expense as $group) :?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $group['gid']?>">
+                            <div class="profit-toggle">
+                                <span>
+                                    <?= $group['group']; ?>
+                                </span>
+                                <span class="right">
+                                    <?= $this->currencyFormat($group['money'], 'RUR', null, 'ru_RU'); ?>
+                                </span>
+                            </div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse<?= $group['gid']; ?>" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <table class="table main-table">
+                            <?php foreach ($group['data'] as $expense) :?>
+                                <tr>
+                                    <td>
+                                        <?= $expense['category']; ?>
+                                    </td>
+                                    <td class="num">
+                                        <?= $this->currencyFormat($expense['money'], 'RUR', null, 'ru_RU'); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach;?>
+    </div>
+    <div class="profit-toggle">
+        <span>Итого:</span>
+        <span class="right"><?= $this->currencyFormat($main_sum, 'RUR', null, 'ru_RU'); ?></span>
+    </div>
+<?php endif;?>
+
+<?php if ($add['data']) :?>
+    <h4>Транспортные расходы</h4>
+    <table class="table table-bordered table-striped main-table">
+        <?php foreach ($add['data'] as $addex) :?>
+            <tr>
+                <td><?= $addex['name']; ?></td>
+                <td class="num"><?= isset($addex['sum']) ? $this->currencyFormat($addex['sum'], 'RUR', null, 'ru_RU') : '' ?></td>
+            </tr>
+        <?php endforeach;?>
+        <tr>
+            <td>Итого:</td>
+            <td class="total num"><?= $this->currencyFormat($add['sum'], 'RUR', null, 'ru_RU'); ?></td>
+        </tr>
+    </table>
+<?php endif;?>
+
+<?php if ($storage_expense) :?>
+    <?php foreach ($storage_expense as $arr) :?>
+        <h4>Расходы кассира</h4>
+        <div class="panel-group" id="accordion">
+            <?php foreach ($arr['expense'] as $group) :?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= '1'.$group['gid']; ?>">
+                                <div class="profit-toggle">
+                                    <span><?= $group['group']; ?></span>
+                                    <span class="right"><?= $this->currencyFormat($group['money'], 'RUR', null, 'ru_RU'); ?></span>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse<?= '1'.$group['gid']; ?>" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table class="table main-table">
+                                <?php foreach ($group['data'] as $expense) :?>
+                                    <tr>
+                                        <td><?= $expense['category']; ?></td>
+                                        <td class="num">
+                                            <?= $this->currencyFormat($expense['money'], 'RUR', null, 'ru_RU'); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach;?>
+        </div>
+        <div class="profit-toggle">
+            <span>Итого:</span>
+            <span class="right"><?= $this->currencyFormat($arr['sum'], 'RUR', null, 'ru_RU'); ?></span>
+        </div>
+    <?php endforeach;?>
+<?php endif;?>

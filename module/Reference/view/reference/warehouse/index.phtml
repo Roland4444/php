@@ -1,0 +1,44 @@
+<?php /**@var \Reference\Entity\Warehouse $line*/?>
+<h1>Справочник хоз. складов</h1>
+
+<a href="<?= $this->url('warehouse', ['action' => 'add'])?>" class="btn btn-default">Добавить</a>
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Пользователи</th>
+        <th>Открытое</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($rows as $line) :?>
+        <tr style="<?= $line->isClosed() ? 'color: #ccc;' : ''?>">
+            <td><?= $line->getName(); ?></td>
+            <td>
+                <?php foreach ($line->getUsers() as $user) : ?>
+                    <?= $user->getName(); ?>
+                <?php endforeach; ?>
+            </td>
+            <td style="text-align: center">
+                <?php if (! $line->isClosed()) :?>
+                    <strong style="color: red">&#10004;</strong>
+                <?php else :?>
+                    &#10008;
+                <?php endif;?>
+            </td>
+            <td class="action">
+                <a href="<?= $this->url('warehouse', ['action' => 'edit', 'id' => $line->getId()])?>">
+                    <img src='/images/edit.png' alt='Редактировать'>
+                </a>
+                <a class="confirm" href="<?= $this->url('warehouse', ['action' => 'delete', 'id' => $line->getId()])?>">
+                    <img src='/images/del.png' alt='Удалить'>
+                </a>
+            </td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>
+
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="Module Reference Test Suite">
+            <directory>./module/Reference/test/functional</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="production"/>
+    </php>
+    <!--<filter>
+        <whitelist>
+            <directory suffix=".php">./module</directory>
+            <exclude>
+                <directory suffix=".phtml">./module</directory>
+                <directory suffix=".config.php">./module</directory>
+                <directory suffix="Factory.php">./module</directory>
+                <directory suffix="Test.php">./module</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./data/logs/report" lowUpperBound="50" highLowerBound="80"/>
+    </logging>-->
+</phpunit>

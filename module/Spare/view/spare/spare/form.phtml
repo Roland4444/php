@@ -1,0 +1,22 @@
+<p class="text-danger"><?= $error; ?></p>
+
+<?php $this->initScript('spare/spare'); ?>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('sparesReference', ['action' => $action, 'id' => $id]));
+$form->setAttribute('class', 'form-horizontal form-add');
+$form->prepare();
+?>
+<?= $this->form()->openTag($form); ?>
+
+<div id="app">
+    <spare-form
+            url="<?=$this->url('sparesReference', ['action' => $action, 'id' => $id]) ?>"
+            index-url="<?=$this->url('sparesReference') ?>"
+            :entity='<?=$entity ?? "{}" ?>'
+            :images-paths='<?=$imagePaths ?? "[]" ?>'
+    ></spare-form>
+</div>
+
+<?= $this->form()->closeTag(); ?>

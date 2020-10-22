@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="./module/Bootstrap.php">
+    <testsuites>
+        <testsuite name="Finance Module Test Suite">
+            <directory>./module/Finance/test</directory>
+            <exclude>./module/Finance/test/Dao</exclude>
+        </testsuite>
+        <testsuite name="Module Application Test">
+            <directory>./module/Application/test</directory>
+        </testsuite>
+        <testsuite name="Module Modules Test Suite">
+            <directory>./module/Modules/test</directory>
+            <exclude>./module/Modules/test/Dao</exclude>
+        </testsuite>
+        <testsuite name="Module Api Test Suite">
+            <directory>./module/Api/test</directory>
+        </testsuite>
+        <testsuite name="Module Factoring Test Suite">
+            <directory>./module/Factoring/test</directory>
+        </testsuite>
+        <testsuite name="Module Storage Test Suite">
+            <directory>./module/Storage/test</directory>
+        </testsuite>
+        <testsuite name="Module Core Test Suite">
+            <directory>./module/Core/test</directory>
+        </testsuite>
+        <testsuite name="Module Reference Test Suite">
+            <directory>./module/Reference/test/unit</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="production"/>
+    </php>
+    <!--<filter>
+        <whitelist>
+            <directory suffix=".php">./module</directory>
+            <exclude>
+                <directory suffix=".phtml">./module</directory>
+                <directory suffix=".config.php">./module</directory>
+                <directory suffix="Factory.php">./module</directory>
+                <directory suffix="Test.php">./module</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./data/logs/report" lowUpperBound="50" highLowerBound="80"/>
+    </logging>-->
+</phpunit>

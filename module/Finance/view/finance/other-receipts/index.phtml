@@ -1,0 +1,7 @@
+<h1>Приход денег за товары и услуги</h1>
+
+<?php $this->initScript('finance/other-receipts'); ?>
+
+<div id="app">
+    <finance-other-receipts :permissions='<?= json_encode($permissions) ?>' :banks='<?= json_encode($bankAccounts) ?>' api-url="<?=$this->url($apiUrl) ?>" />
+</div>

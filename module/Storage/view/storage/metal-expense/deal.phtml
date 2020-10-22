@@ -1,0 +1,71 @@
+<h3>
+    Сделка от <?= $this->dateFormat(DateTime::createFromFormat('Y-m-d', $deal->getPurchaseList()[0]->getDate()), IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'ru_RU'); ?> на сумму <?= $this->currencyFormat($deal->getSum(), 'RUR'); ?>
+</h3>
+
+<table class="mytable table-bordered table-striped main-table"">
+    <thead>
+        <tr>
+            <th>Металл</th>
+            <th>Масса, кг</th>
+            <th>Цена, руб</th>
+            <th>Сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($deal->getPurchaseList() as $item) : ?>
+            <tr>
+                <td><?= $item->getMetal()->getName() ?></td>
+                <td class="num"><?= $this->numberFormat($item->getWeight()); ?>&nbsp;кг.</td>
+                <td class="num"><?= $this->currencyFormat($item->getCost(), 'RUR'); ?></td>
+                <td class="num"><?= $this->currencyFormat($item->getSum(), 'RUR'); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <tr>
+            <th></th>
+            <th class="num"><?= $this->numberFormat($deal->getWeight()); ?>&nbsp;кг.</th>
+            <th></th>
+            <th class="num"><?= $this->currencyFormat($deal->getSum(), 'RUR'); ?></th>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Оплачено:</strong>&nbsp;<?= $this->currencyFormat($paid, 'RUR'); ?></p>
+<p><strong>Остаток:</strong>&nbsp;<?= $this->currencyFormat($debts, 'RUR'); ?></p>
+
+<?php if ($debts > 0) : ?>
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url($this->route, [
+        'action' => $this->currentRoute()->getAction(),
+        'department' => $departmentId,
+        'id' => $deal->getId()
+    ]));
+    $form->setAttribute('class', 'form-horizontal');
+    if ($this->permissions['delete']) {
+        $form->prepare();
+    }
+    ?>
+    <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group <?=  $this->formElementErrors($form->get('money')) ? 'error' : '' ?>">
+            <div class="col-sm-2">
+                <?= $this->formElement($form->get('money')->setValue(($debts))); ?>
+            </div>
+        </div>
+
+        <div class="form-group <?=  $this->formElementErrors($form->get('diamond')) ? 'error' : '' ?>">
+            <div class="checkbox col-sm-2">
+                <label><?= $this->formElement($form->get('diamond')); ?><?= $form->get('diamond')->getLabel(); ?></label>
+            </div>
+        </div>
+
+        <?= $this->formSubmit($form->get('submit')); ?>
+
+    <?= $this->form()->closeTag() ?>
+<?php endif; ?>
+
+<p class="alert-danger" style="margin-top: 10px;"><?= $message; ?></p>
+
+<p style="margin-top: 20px;">
+    <a href="<?= $this->url($backRoute, ['department' => $departmentId]);?>">Назад в приход металла</a>
+</p>

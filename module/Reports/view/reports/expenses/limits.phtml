@@ -1,0 +1,7 @@
+<?php $this->initScript('reports/limits'); ?>
+
+<h1>Лимиты расходов</h1>
+
+<div id="app">
+    <expense-limits :data='<?=$this->data ?>' api-url="<?=$this->url('reportExpensesLimits') ?>"></expense-limits>
+</div>

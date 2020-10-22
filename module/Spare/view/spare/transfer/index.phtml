@@ -1,0 +1,79 @@
+<h1>Перемещение ТМЦ</h1>
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $(".s2").select2();
+    });
+</script>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('spareTransfer', [
+    'warehouse' => $params['warehouse'],
+]));
+?>
+<?= $this->form()->openTag($form) ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+<?php if (! empty($permissions['add'])) : ?>
+    <p>
+        <a href="<?= $this->url('spareTransfer', array_merge(['action' => 'add'], $params))?>"
+           class="btn btn-default">
+            Добавить
+        </a>
+    </p>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered main-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Дата</th>
+        <th>Запчасть</th>
+        <th>Отправитель</th>
+        <th>Получатель</th>
+        <th>Количество</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($rows as $line) :?>
+        <tr>
+            <td><?= $line->getId() ?></td>
+            <td class="date"><?= $line->getDate() ?></td>
+            <td><?= $line->getSpare()->getName() ?></td>
+            <td><?= $line->getSource()->getName() ?: ' ' ?></td>
+            <td><?= $line->getDest()->getName() ?: ' ' ?></td>
+            <td style="text-align: center;"><?= $line->getQuantity() ?></td>
+            <td>
+                <?php if ($line->getSource()->getId() == $params['warehouse']) : ?>
+                    <?php if (! empty($permissions['edit'])) : ?>
+                        <a href="<?= $this->url('spareTransfer', array_merge(
+                            ['action' => 'edit', 'id' => $line->getId()],
+                            $params
+                        )); ?>">
+                            <img src='/images/edit.png' alt='Редактировать'>
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($permissions['delete']) : ?>
+                        <a class="confirm"
+                           href="<?= $this->url('spareTransfer', array_merge(
+                               ['action' => 'delete', 'id' => $line->getId()],
+                               $params
+                           )); ?>">
+                            <img src='/images/del.png' alt='Удалить'>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+

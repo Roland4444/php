@@ -1,0 +1,36 @@
+<?php $this->headTitle('Факторинг - Оплата :: '); ?>
+<h1>Факторинг - Оплата</h1>
+
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+$this->form->setAttribute('class', 'form-inline form-filter');
+$this->form->setAttribute('action', $this->url('factoring_payments'));
+?>
+
+<?= $this->form()->openTag($this->form) ?>
+<?php foreach ($this->form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<?php if ($permissions['add']) : ?>
+    <a href="<?= $this->url('factoring_payments', ['action' => 'add'])?>" class="btn btn-default">Добавить</a>
+<?php endif; ?>
+
+<?php $this->initScript('factoring/payment'); ?>
+<div id="app">
+    <payment-list
+        :items='<?= json_encode($data["items"]) ?>'
+        :permissions='<?= json_encode($permissions) ?>'
+        :sum='<?= json_encode($data["sum"]) ?>'
+        :edit-url="'<?= $this->url('factoring_payments', ['action' => 'edit']) ?>'"
+        :delete-url="'<?= $this->url('factoring_payments', ['action' => 'delete']) ?>'"
+        :confirm-url="'<?= $this->url('factoring_payments', ['action' => 'confirm']) ?>'"
+    ></payment-list>
+</div>

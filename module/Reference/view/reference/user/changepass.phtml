@@ -1,0 +1,23 @@
+<?php $this->headTitle($title); ?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal form-add');
+$form->setAttribute('action', $this->url('user/changepass'));
+$form->prepare();
+?>
+<?= $this->form()->openTag($form); ?>
+<?php foreach ($form as $element) : ?>
+    <div class="form-group <?= $this->formElementErrors($element) ? 'error' : '' ?>">
+        <label class="col-sm-3 control-label"><?= $element->getLabel() ?></label>
+        <div class="col-sm-4 ">
+            <?= $this->formElement($element); ?>
+            <?php if ($this->formElementErrors($element)) : ?>
+                <span class="help-inline"><?= $this->formElementErrors($element) ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>

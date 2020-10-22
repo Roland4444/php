@@ -1,0 +1,8 @@
+<?php $this->headTitle('Инкассация')?>
+<h1>Инкассация</h1>
+
+<?php $this->initScript('office_cash/transport_income'); ?>
+
+<div id="app">
+    <transport-income-list api-url="<?=$this->url('transportIncas') ?>" :access='<?= $access ?>' />
+</div>

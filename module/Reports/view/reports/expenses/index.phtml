@@ -1,0 +1,49 @@
+<?php $this->headTitle('Отчеты :: Расходы')?>
+<h1>Отчеты :: Расходы</h1>
+<script>
+    $(document).ready(function(){
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+    });
+</script>
+
+<?php
+    $form = $this->form;
+    $form->setAttribute('class', 'form-inline form-filter');
+    $form->prepare();
+    $form->setAttribute('action', $this->url('reportExpenses'));
+?>
+
+<?= $this->form()->openTag($form); ?>
+    <?php foreach ($form as $element) : ?>
+        <?= $this->formElement($element); ?> &nbsp;
+    <?php endforeach; ?>
+<?= $this->form()->closeTag(); ?>
+
+<?php if (! empty($this->groupedExpenses)) : ?>
+    <?php foreach ($this->groupedExpenses as $sortGroup) : ?>
+        <?php foreach ($sortGroup as $group) : ?>
+        <h2><?=$group['title'] ?></h2>
+        <table class="table table-striped table-bordered main-table" style="max-width: 500px;">
+            <thead>
+                <tr>
+                    <th>Категория</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($group['expenses'] as $expense) : ?>
+                    <tr>
+                        <td><?=$expense['category'] ?></td>
+                        <td class="num"><?=$this->currencyFormat($expense['money'], 'RUR', null, 'ru_RU') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                <tr>
+                    <td></td>
+                    <th class="num"><?=$this->currencyFormat($group['sum'], 'RUR', null, 'ru_RU') ?></th>
+                </tr>
+            </tbody>
+        </table>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

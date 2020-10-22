@@ -1,0 +1,77 @@
+<h1>Данные дозиметра</h1>
+
+<?php if (! empty($errors)) : ?>
+    <ul>
+        <?php foreach ($errors as $error) : ?>
+            <li class="validation-error-message"><?= $error ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+<?php if (! empty($data)) : ?>
+<form action="<?= $this->url('shipmentDocs/dosimeter', ['action' => 'update']); ?>" class="form-horizontal form-add" method="post">
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="model">Модель</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="model" name="model" class="form-control" value="<?= htmlentities($data['model']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="number">Заводской номер</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="number" name="number" class="form-control" value="<?= htmlentities($data['number']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="created">Дата изготовления</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="created" name="created" class="form-control" value="<?= htmlentities($data['created']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="verified">Дата поверки</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="verified" name="verified" class="form-control" value="<?= htmlentities($data['verified']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="verify_number">Свидетельство о поверке</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="verify_number" name="verify_number" class="form-control" value="<?= htmlentities($data['verify_number']) ?>">
+        </div>
+    </div>
+    <div class="row inputs">
+        <div class="col-md-2 mb-2">
+            <label for="verify_date">Срок поверки</label>
+        </div>
+        <div class="col-md-10 mb-10">
+            <input type="text" id="verify_date" name="verify_date" class="form-control" value="<?= htmlentities($data['verify_date']) ?>">
+        </div>
+    </div>
+    <input type="hidden" id="id" name="id" class="form-control" value="<?= $data['id'] ?>">
+
+    <button class="btn btn-default" type="submit">Сохранить</button>
+</form>
+<?php endif; ?>
+<style>
+    .inputs {
+        margin-bottom: 20px;
+    }
+
+    .validation-error-message {
+        color: #ff0000;
+        font-size: 10pt
+    }
+</style>
+
+

@@ -1,0 +1,73 @@
+<h1>Поступление на склад</h1>
+<script>
+    $(function() {
+        $('#startdate').datepicker();
+        $('#enddate').datepicker();
+        $(".s2").select2();
+    });
+</script>
+<?php
+$form->setAttribute('class', 'form-inline form-filter');
+$form->prepare();
+$form->setAttribute('action', $this->url('spareReceipt', $routParams));
+?>
+<?= $this->form()->openTag($form) ?>
+<?php foreach ($form as $element) : ?>
+    <?= $this->formElement($element) ?>&nbsp;
+<?php endforeach; ?>
+<?= $this->form()->closeTag() ?>
+
+<div class="flashInfo"><?= $this->flashMessenger()->render(); ?></div>
+
+<?php if (! empty($permissions['add'])) : ?>
+    <p>
+        <a href="<?= $this->url('spareReceipt', array_merge(['action' => 'add'], $routParams))?>"
+           class="btn btn-default">
+            Добавить
+        </a>
+    </p>
+<?php endif; ?>
+<?php foreach ($receipts as $key => $receipt) : /**@var \Spare\Entity\Receipt $receipt*/?>
+    <span style="font-weight: bold;"><?= $receipt->getDate() ?></span>
+    <?= $receipt->getDocument() ?>
+    <span style="font-weight: bold;">Поставщик:</span> <?= $receipt->getSeller()->getName() ?>
+    <?php if (! empty($permissions['edit'])) : ?>
+        <a href="<?= $this->url('spareReceipt', array_merge(
+            ['action' => 'edit', 'id' => $receipt->getId()],
+            $routParams
+        )); ?>">
+            <img src='/images/edit.png' alt='Редактировать'>
+        </a>
+    <?php endif; ?>
+    <?php if ($permissions['delete']) : ?>
+        <a class="confirm" href="<?= $this->url('spareReceipt', array_merge([
+                'action' => 'delete', 'id' => $receipt->getId()
+            ], $routParams)); ?>"><img src='/images/del.png' alt='Удалить'>
+        </a>
+    <?php endif; ?>
+    <table class="table table-striped table-bordered main-table">
+        <thead>
+        <tr>
+            <th style="width: 25%;">Запчасть</th>
+            <th>Заказ</th>
+            <th style="width: 25%;">Количество</th>
+            <th style="width: 25%;">Количество в упаковке</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($receipt->getItems() as $receiptItem) : /**@var \Spare\Entity\ReceiptItems $receiptItem*/?>
+            <tr>
+                <td><?= $receiptItem->getSpare()->getName() ?></td>
+                <td style="text-align: center;">
+                    <a href="<?=$this->url('spareOrder') ?>#order<?= $receiptItem->getOrderItem()->getOrder()->getId() ?>">
+                        <?= $receiptItem->getOrderItem()->getOrder()->getId() ?>
+                    </a>
+                </td>
+                <td style="text-align: center;"><?= $receiptItem->getQuantity() ?> шт.</td>
+                <td style="text-align: center;"><?= $receiptItem->getSubQuantity() ?> <?= empty($receiptItem->getSubQuantity()) ? '-' : $receiptItem->getSpare()->getUnits() ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+<?php endforeach; ?>

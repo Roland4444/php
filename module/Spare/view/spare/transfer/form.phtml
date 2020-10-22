@@ -1,0 +1,12 @@
+<?php $this->initScript('spare/transfer'); ?>
+<div id="app">
+    <spare-transfer-form-panel
+        :cancel-uri="'<?=$cancelUri?>'"
+        :save-uri="'<?=$saveUri?>'"
+        :transfers='<?=$transfers?>'
+        :warehouses-object='<?=$warehouses?>'
+        :spares-object='<?=$jsonSpare?>'
+        :roles='<?=$roles?>'
+    ></spare-transfer-form-panel>
+</div>
+

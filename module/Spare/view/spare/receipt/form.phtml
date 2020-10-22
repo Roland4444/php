@@ -1,0 +1,10 @@
+<?php $this->initScript('spare/receipt'); ?>
+<div id="app">
+    <spare-receipt-form-panel
+        api-url="<?= $this->url('spareReceipt', $this->routeParams) ?>"
+        :receipt='<?=$receipt ?? "{}" ?>'
+        :seller-list='<?=$sellers?>'
+        :roles='<?=$roles?>'
+        action="<?=$action?>"
+    ></spare-receipt-form-panel>
+</div>
